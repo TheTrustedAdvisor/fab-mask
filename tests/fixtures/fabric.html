@@ -4,7 +4,12 @@
 <body>
   <trident-user-info-button><button class="userInfoButton"><div class="userInfoCircle">JD</div></button></trident-user-info-button>
   <h1 data-testid="workspace-name-header" class="workspace-name">Contoso Finance Prod</h1>
+  <div role="row" class="column-headers">
+    <span id="hdr-owner" role="columnheader" class="column-header col col-owner">Owner</span>
+    <span id="hdr-location" role="columnheader" class="column-header col col-workspace">Location</span>
+  </div>
   <div role="row" class="row">
+    <span class="col col-workspace">Contoso Finance Prod</span>
     <span class="col col-name"><span class="name-text">lh_gold</span></span>
     <span class="col col-owner" data-testid="fluentListCell.owner"><span>Jane Doe</span></span>
   </div>

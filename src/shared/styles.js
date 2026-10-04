@@ -22,7 +22,8 @@
     'img[data-testid="workspace-header-logo-img"]',
     // "Owner" column in workspace lists and the OneLake catalog (display names, not e-mails)
     '[data-testid="fluentListCell.owner"]',
-    '.col.col-owner',
+    // The column header carries the same classes as the cells – keep the header ("Owner") readable.
+    '.col.col-owner:not([role="columnheader"], .column-header)',
     // Owner in the OneLake catalog item details
     'owner-details .property-value',
     // Microsoft account manager (MeControl) and Fluent personas used in older / embedded views
@@ -48,7 +49,7 @@
     'h1[data-testid="workspace-name-header"]',
     'button.workspaceName .navbar-item-label',
     'tri-workspace-button .workspace-name',
-    '.col.col-workspace',
+    '.col.col-workspace:not([role="columnheader"], .column-header)',
     'trident-domain-link .domain-link'
   ];
 

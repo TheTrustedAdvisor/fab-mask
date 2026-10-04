@@ -52,8 +52,9 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
   await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
   assert.equal(await filterOf(page, '#ws-id'), 'blur(8px)');
   assert.equal(await filterOf(page, '#endpoint'), 'blur(8px)');
-  assert.equal(await filterOf(page, '.col-owner'), 'blur(8px)');
+  assert.equal(await filterOf(page, '.row .col-owner'), 'blur(8px)');
   assert.equal(await filterOf(page, '.userInfoCircle'), 'blur(8px)');
+  assert.equal(await filterOf(page, '#hdr-owner'), 'none'); // column headers stay readable
   assert.equal(await filterOf(page, '#plain'), 'none');
   assert.equal(await filterOf(page, 'h1.workspace-name'), 'none'); // workspace names are opt-in
   assert.equal(await page.title(), 'lh_gold - Fabric');
@@ -77,13 +78,15 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
   // Opt-in category + custom term, applied live without reload
   await setSettings({ categories: { workspaceNames: true }, customTerms: ['lh_gold'] });
   await page.waitForFunction(() => getComputedStyle(document.querySelector('h1.workspace-name')).filter !== 'none');
+  assert.equal(await filterOf(page, '.row .col-workspace'), 'blur(8px)');
+  assert.equal(await filterOf(page, '#hdr-location'), 'none');
   await page.waitForFunction(() => document.querySelector('.name-text').hasAttribute('data-fabric-mask'));
   await page.waitForFunction(() => document.title === '•••••• - Fabric');
 
   // Global off switch (what the popup / Alt+Shift+M does)
   await setSettings({ enabled: false });
   await page.waitForFunction(() => !document.querySelector('#ws-id').hasAttribute('data-fabric-mask'));
-  assert.equal(await filterOf(page, '.col-owner'), 'none');
+  assert.equal(await filterOf(page, '.row .col-owner'), 'none');
   assert.equal(await page.title(), 'lh_gold - Fabric');
   await nb.locator('#path:not([data-fabric-mask])').waitFor();
 

@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.0.1] – 2026-10-04
+
+### Fixed
+- Column headers ("Owner", "Location") in workspace lists and the OneLake catalog are no longer
+  masked – only the cells below them.
+
 ## [1.0.0] – 2026-10-04
 
 First release.
@@ -21,4 +27,5 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.0.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.1
 [1.0.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.0
