@@ -11,6 +11,7 @@
     doc.documentElement.lang = (root.chrome && root.chrome.i18n && root.chrome.i18n.getUILanguage()) || 'en';
     for (const el of doc.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
     for (const el of doc.querySelectorAll('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle);
+    for (const el of doc.querySelectorAll('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder);
     for (const el of doc.querySelectorAll('[data-i18n-aria-label]')) {
       el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
     }

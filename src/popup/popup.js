@@ -3,12 +3,25 @@
   'use strict';
 
   const FM = FabricMask;
+  const MSG = FM.MESSAGES;
   const $ = (id) => document.getElementById(id);
   FM.localize(document);
 
-  const MSG = FM.MESSAGES;
   let settings = await FM.loadSettings();
+  let curtain = await FM.getCurtain();
+  let profiles = await FM.allProfiles();
   let activeTabId = null;
+
+  const profileName = (p) => (p.nameKey ? FM.t(p.nameKey) : p.name);
+
+  function renderProfiles() {
+    const select = $('profile');
+    select.textContent = '';
+    const custom = new Option(FM.t('profileCustom'), 'custom');
+    select.add(custom);
+    for (const p of profiles) select.add(new Option(profileName(p), p.id));
+    select.value = profiles.some((p) => p.id === settings.activeProfile) ? settings.activeProfile : 'custom';
+  }
 
   function render() {
     $('enabled').checked = settings.enabled;
@@ -20,7 +33,7 @@
       radio.checked = radio.value === settings.mode;
     }
     // One "strength" slider: blur radius, or mosaic block size (minimum MIN_PIXEL).
-    $('blur-row').hidden = settings.mode === 'redact';
+    $('blur-row').hidden = settings.mode === 'redact' || settings.mode === 'fake';
     const min = settings.mode === 'pixelate' ? FM.MIN_PIXEL : FM.MIN_BLUR;
     const value = Math.max(min, settings.blurPx);
     $('blurPx').min = String(min);
@@ -28,13 +41,18 @@
     $('blurPx-value').textContent = `${value}px`;
     $('revealOnHover').checked = settings.revealOnHover;
     $('maskTitle').checked = settings.maskTitle;
+    $('stripTooltips').checked = settings.stripTooltips;
+    $('curtain').setAttribute('aria-pressed', String(curtain));
+    $('preview').setAttribute('aria-pressed', String(settings.preview));
+    renderProfiles();
   }
 
-  async function update(mutator) {
+  /** Changes to profile-controlled fields switch the profile selector to "Custom". */
+  async function update(mutator, { profileField = true } = {}) {
     try {
       settings = await FM.updateSettings((s) => {
         mutator(s);
-        return s;
+        if (profileField) s.activeProfile = 'custom';
       });
     } catch {
       settings = await FM.loadSettings(); // show the persisted state
@@ -43,7 +61,7 @@
     render();
   }
 
-  $('enabled').addEventListener('change', (e) => update((s) => { s.enabled = e.target.checked; }));
+  $('enabled').addEventListener('change', (e) => update((s) => { s.enabled = e.target.checked; }, { profileField: false }));
   for (const box of document.querySelectorAll('[data-category]')) {
     box.addEventListener('change', () => update((s) => { s.categories[box.dataset.category] = box.checked; }));
   }
@@ -54,6 +72,28 @@
   $('blurPx').addEventListener('change', (e) => update((s) => { s.blurPx = Number(e.target.value); }));
   $('revealOnHover').addEventListener('change', (e) => update((s) => { s.revealOnHover = e.target.checked; }));
   $('maskTitle').addEventListener('change', (e) => update((s) => { s.maskTitle = e.target.checked; }));
+  $('stripTooltips').addEventListener('change', (e) => update((s) => { s.stripTooltips = e.target.checked; }));
+
+  $('profile').addEventListener('change', async (e) => {
+    const profile = profiles.find((p) => p.id === e.target.value);
+    if (!profile) {
+      await update((s) => { s.activeProfile = 'custom'; }, { profileField: false });
+      return;
+    }
+    await update((s) => Object.assign(s, FM.applyProfile(s, profile)), { profileField: false });
+  });
+
+  $('curtain').addEventListener('click', async () => {
+    const next = !curtain;
+    try {
+      await FM.setCurtain(next);
+      curtain = next; // the storage listener may already have applied it
+    } catch {
+      $('page-status').textContent = FM.t('saveFailed');
+    }
+    render();
+  });
+  $('preview').addEventListener('click', () => update((s) => { s.preview = !s.preview; }, { profileField: false }));
 
   $('open-options').addEventListener('click', (e) => {
     e.preventDefault();
@@ -63,18 +103,19 @@
 
   $('pick').addEventListener('click', async () => {
     if (activeTabId === null) return;
-    if (!settings.enabled) await update((s) => { s.enabled = true; });
+    if (!settings.enabled) await update((s) => { s.enabled = true; }, { profileField: false });
     await chrome.tabs.sendMessage(activeTabId, { type: MSG.START_PICKER }).catch(() => {});
     window.close();
   });
 
-  // Settings changed elsewhere (shortcut, options page) while the popup is open.
-  chrome.storage.onChanged.addListener((changes, areaName) => {
+  // Changes made elsewhere (shortcuts, options page) while the popup is open.
+  chrome.storage.onChanged.addListener(async (changes, areaName) => {
     const next = FM.settingsFromChange(changes, areaName);
-    if (next) {
-      settings = next;
-      render();
-    }
+    if (next) settings = next;
+    const c = FM.valueFromChange(changes, areaName, FM.CURTAIN_KEY, (v) => v === true);
+    if (c !== undefined) curtain = c;
+    if (FM.valueFromChange(changes, areaName, FM.PROFILES_KEY, (v) => v)) profiles = await FM.allProfiles();
+    render();
   });
 
   render();

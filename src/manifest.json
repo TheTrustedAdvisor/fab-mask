@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Fab Mask",
   "description": "__MSG_extDescription__",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "homepage_url": "https://github.com/TheTrustedAdvisor/fab-mask",
   "default_locale": "en",
   "minimum_chrome_version": "111",
@@ -37,6 +37,18 @@
         "default": "Alt+Shift+M"
       },
       "description": "__MSG_commandToggle__"
+    },
+    "toggle-curtain": {
+      "suggested_key": {
+        "default": "Alt+Shift+B"
+      },
+      "description": "__MSG_commandCurtain__"
+    },
+    "toggle-preview": {
+      "suggested_key": {
+        "default": "Alt+Shift+P"
+      },
+      "description": "__MSG_commandPreview__"
     }
   },
   "content_scripts": [
@@ -58,6 +70,7 @@
       "js": [
         "shared/settings.js",
         "shared/detector.js",
+        "shared/fake.js",
         "shared/styles.js",
         "content/picker.js",
         "content/masker.js"

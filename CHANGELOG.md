@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.2.0] – 2026-10-04
+
+### Added
+- **Learned person names**: names from owner, admin and account fields are collected locally and
+  masked everywhere in the portal (descriptions, lineage, search …). Listed on the options page,
+  removable individually or all at once. New category "Learned person names" (on by default).
+- **Tooltip masking**: native `title` tooltips of masked elements, and tooltips containing
+  sensitive values, are masked; originals are restored when switched off.
+- **Curtain** (Alt+Shift+B or popup): covers all Fabric tabs with a neutral overlay.
+- **Preview mode** (Alt+Shift+P or popup): outlines everything that is masked and shows a counter.
+- **Fake-data mode**: plausible, consistent replacement values (same person → same fake name,
+  same ID → same fake ID) shown as an overlay; inputs, images and initials stay pixelated.
+- **Profiles**: built-in *Customer demo*, *Recording (fake data)*, *Screenshots (redact)*,
+  *Internal training*, plus user profiles saved on the options page.
+- Performance regression test (3,000-row list with all features on).
+
+### Changed
+- Documentation (README, installation guide, privacy policy, store texts) is now English-only.
+
+### Fixed
+- The README's "without Fab Mask" screenshot showed masked content (race with the install handler
+  in the screenshot script); the script now verifies that all demo shots differ.
+
 ## [1.1.1] – 2026-10-04
 
 ### Fixed
@@ -54,6 +77,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.2.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.0
 [1.1.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.1
 [1.1.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.0
 [1.0.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.1

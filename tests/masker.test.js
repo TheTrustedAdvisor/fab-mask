@@ -4,7 +4,7 @@ const { JSDOM } = require('jsdom');
 const path = require('node:path');
 const fs = require('node:fs');
 
-const SCRIPTS = ['shared/settings.js', 'shared/detector.js', 'shared/styles.js', 'content/picker.js', 'content/masker.js']
+const SCRIPTS = ['shared/settings.js', 'shared/detector.js', 'shared/fake.js', 'shared/styles.js', 'content/picker.js', 'content/masker.js']
   .map((f) => fs.readFileSync(path.join(__dirname, '..', 'src', f), 'utf8'));
 
 const GUID = '4e864cf8-386d-4067-bfa7-4ef5e408c474';

@@ -3,7 +3,7 @@
     "message": "Fab Mask"
   },
   "extDescription": {
-    "message": "Hides sensitive information (IDs, e-mail addresses, endpoints, secrets, names) in the Microsoft Fabric and Power BI portal for demos and screen sharing."
+    "message": "Hides IDs, e-mails, names, endpoints and secrets in the Microsoft Fabric & Power BI portal – pixelated, blurred, redacted or faked."
   },
   "commandToggle": {
     "message": "Toggle masking on/off"
@@ -60,7 +60,7 @@
     "message": "Signed-in user"
   },
   "catUserProfileHint": {
-    "message": "Account menu, avatars, owner names, workspace images"
+    "message": "Account menu, avatars, owner and admin names, workspace images"
   },
   "sectionAppearance": {
     "message": "Appearance"
@@ -149,5 +149,106 @@
   },
   "modePixelate": {
     "message": "Pixelate"
+  },
+  "commandCurtain": {
+    "message": "Show/hide the curtain (pause view)"
+  },
+  "commandPreview": {
+    "message": "Toggle preview mode (outline masked areas)"
+  },
+  "statusCurtain": {
+    "message": "curtain closed"
+  },
+  "catLearnedNames": {
+    "message": "Learned person names"
+  },
+  "catLearnedNamesHint": {
+    "message": "Names from owner/admin fields, masked everywhere"
+  },
+  "modeFake": {
+    "message": "Fake data"
+  },
+  "stripTooltips": {
+    "message": "Mask tooltips"
+  },
+  "sectionProfile": {
+    "message": "Profile"
+  },
+  "profileCustom": {
+    "message": "Custom"
+  },
+  "profileCustomerDemo": {
+    "message": "Customer demo"
+  },
+  "profileRecording": {
+    "message": "Recording (fake data)"
+  },
+  "profileScreenshot": {
+    "message": "Screenshots (redact)"
+  },
+  "profileInternal": {
+    "message": "Internal training"
+  },
+  "curtainButton": {
+    "message": "Curtain"
+  },
+  "curtainButtonHint": {
+    "message": "Hides all Fabric tabs behind a neutral overlay (Alt+Shift+B)"
+  },
+  "curtainTitle": {
+    "message": "View paused"
+  },
+  "curtainHint": {
+    "message": "Fab Mask is hiding this page. Press Alt+Shift+B or use the extension popup to continue."
+  },
+  "previewButton": {
+    "message": "Preview"
+  },
+  "previewButtonHint": {
+    "message": "Outlines everything that is masked (Alt+Shift+P)"
+  },
+  "previewBadge": {
+    "message": "Fab Mask preview · $COUNT$ masked · Alt+Shift+P to exit",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "sectionProfiles": {
+    "message": "Profiles"
+  },
+  "profilesHint": {
+    "message": "Save the current appearance and detection settings as a profile and switch between them in the popup. Custom terms and selectors are shared by all profiles."
+  },
+  "profileNamePlaceholder": {
+    "message": "Profile name, e.g. \"Customer X workshop\""
+  },
+  "saveProfile": {
+    "message": "Save current settings as profile"
+  },
+  "deleteProfile": {
+    "message": "Delete"
+  },
+  "noProfiles": {
+    "message": "No profiles of your own yet."
+  },
+  "learnedNamesTitle": {
+    "message": "Learned person names"
+  },
+  "learnedNamesHint": {
+    "message": "Fab Mask collects names from owner and admin fields and masks them everywhere in the portal. Stored only in this browser profile."
+  },
+  "learnedNamesEmpty": {
+    "message": "No names learned yet – open a workspace or the OneLake catalog."
+  },
+  "clearLearned": {
+    "message": "Forget all names"
+  },
+  "clearLearnedConfirm": {
+    "message": "Forget all learned names?"
+  },
+  "removeName": {
+    "message": "Remove"
   }
 }

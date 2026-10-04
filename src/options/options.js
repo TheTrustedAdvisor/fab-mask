@@ -89,11 +89,77 @@
     }
   });
 
-  // Keep in sync with selectors added through the element picker (unsaved edits are kept).
+  // --------------------------------------------------------------- profiles
+
+  function renderProfiles(profiles) {
+    const list = $('profile-list');
+    list.textContent = '';
+    for (const p of profiles) {
+      const li = document.createElement('li');
+      const name = document.createElement('span');
+      name.textContent = p.name;
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'btn small';
+      del.textContent = FM.t('deleteProfile');
+      del.addEventListener('click', () => FM.deleteProfile(p.id).catch(() => showStatus(FM.t('saveFailed'), true)));
+      li.append(name, del);
+      list.appendChild(li);
+    }
+    $('no-profiles').hidden = profiles.length > 0;
+  }
+
+  $('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('profile-name').value.trim();
+    if (!name) return;
+    try {
+      const profile = await FM.saveProfile(name, await FM.loadSettings());
+      await FM.updateSettings((s) => { s.activeProfile = profile.id; });
+      $('profile-name').value = '';
+      showStatus(FM.t('saved'));
+    } catch {
+      showStatus(FM.t('saveFailed'), true);
+    }
+  });
+
+  // ----------------------------------------------------------- learned names
+
+  function renderLearned(names) {
+    const list = $('learned-list');
+    list.textContent = '';
+    for (const n of names) {
+      const li = document.createElement('li');
+      const label = document.createElement('span');
+      label.textContent = n;
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.textContent = '×';
+      del.title = FM.t('removeName');
+      del.setAttribute('aria-label', `${FM.t('removeName')}: ${n}`);
+      del.addEventListener('click', () => FM.removeLearnedName(n));
+      li.append(label, del);
+      list.appendChild(li);
+    }
+    $('no-learned').hidden = names.length > 0;
+    $('clear-learned').hidden = names.length === 0;
+  }
+
+  $('clear-learned').addEventListener('click', async () => {
+    if (window.confirm(FM.t('clearLearnedConfirm'))) await FM.clearLearnedNames();
+  });
+
+  // Keep in sync with the picker, the popup and newly learned names (unsaved edits are kept).
   chrome.storage.onChanged.addListener((changes, areaName) => {
     const next = FM.settingsFromChange(changes, areaName);
     if (next) render(next);
+    const names = FM.valueFromChange(changes, areaName, FM.LEARNED_KEY, FM.normalizeLearned);
+    if (names) renderLearned(names);
+    const profiles = FM.valueFromChange(changes, areaName, FM.PROFILES_KEY, FM.normalizeProfiles);
+    if (profiles) renderProfiles(profiles);
   });
 
   render(await FM.loadSettings(), { force: true });
+  renderProfiles(await FM.loadProfiles());
+  renderLearned(await FM.loadLearnedNames());
 })();

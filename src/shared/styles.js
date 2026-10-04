@@ -11,6 +11,12 @@
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const MIN_PIXEL = 6;
   const PICKER_ATTR = 'data-fabric-mask-picker';
+  // Fake-data mode: the replacement text shown via ::after (the page's own text is never changed).
+  const FAKE_ATTR = 'data-fabric-fake';
+  // Set on fake-overlay elements that are position:static, so the overlay can anchor to them
+  // without overriding absolute/sticky positioning of the page's own elements.
+  const FAKE_POS_ATTR = 'data-fabric-fake-pos';
+  const PREVIEW_COLOR = '#13a10e';
 
   // Best-effort selectors for the signed-in user (Microsoft account manager / Fluent personas).
   // The portal markup changes frequently; users can add more via the element picker.
@@ -48,6 +54,19 @@
     'img[alt*="Profilbild" i]'
   ];
 
+  // Elements whose text is a person / account name. Their text is learned ("learned names") and
+  // replaced with fake names in the fake-data mode.
+  const PERSON_NAME_SELECTORS = [
+    'user-details .user-name',
+    '[data-testid="fluentListCell.owner"]',
+    '.col.col-owner:not([role="columnheader"], .column-header)',
+    'owner-details .property-value',
+    'tri-members-list .members-names-list',
+    '#mectrl_currentAccount_primary',
+    '.ms-Persona-primaryText',
+    '.fui-Persona__primaryText'
+  ];
+
   // Workspace names often contain customer / project names. Off by default because it hides
   // navigation context; enable for demos with customer workspaces.
   const WORKSPACE_NAME_SELECTORS = [
@@ -71,6 +90,20 @@
     }
     if (settings.mode === 'pixelate') {
       return `${sel}{filter:url("#${PIXELATE_FILTER_ID}")!important;}`;
+    }
+    if (settings.mode === 'fake') {
+      // Elements with a computed fake value show it as an overlay; everything else (inputs,
+      // images, very long text) falls back to the mosaic.
+      const withFake = `${sel}[${FAKE_ATTR}]`;
+      return (
+        `${sel}:not([${FAKE_ATTR}]){filter:url("#${PIXELATE_FILTER_ID}")!important;}` +
+        `${withFake}{-webkit-text-fill-color:transparent!important;text-shadow:none!important;}` +
+        `${withFake}[${FAKE_POS_ATTR}]{position:relative!important;}` +
+        `${withFake}::after{content:attr(${FAKE_ATTR})!important;position:absolute!important;inset:0!important;` +
+        `display:flex!important;align-items:center!important;padding:inherit!important;box-sizing:border-box!important;` +
+        `white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font:inherit!important;` +
+        `-webkit-text-fill-color:currentColor!important;pointer-events:none!important;filter:none!important;}`
+      );
     }
     return `${sel}{filter:blur(${settings.blurPx}px)!important;}`;
   }
@@ -124,6 +157,9 @@
     return svg;
   }
 
+  /** Selectors of person-name fields, as one :is() list. */
+  const personSelectorList = () => `:is(${PERSON_NAME_SELECTORS.join(',')})`;
+
   /** Selectors that mask by CSS alone (no detection), as one :is() list – or null if none. */
   function staticSelectorList(settings) {
     if (!settings || !settings.enabled) return null;
@@ -148,12 +184,19 @@
     for (const s of settings.customSelectors || []) if (isSafeSelector(s)) selectors.push(s);
     // One rule per selector: an invalid (custom) selector only drops its own rule.
     for (const s of selectors) parts.push(maskRules(s, settings));
+    const all = `:is(${selectors.join(',')})`;
     if (settings.mode !== 'redact') {
       // A masked element inside a masked element (e.g. a string token inside a masked editor line)
       // would be filtered twice; a second mosaic pass samples the first one's gaps and the text
       // nearly disappears. The outer filter already covers the inner content.
-      const all = `:is(${selectors.join(',')})`;
       parts.push(`${all} ${all}{filter:none!important;}`);
+    }
+    if (settings.mode === 'fake') {
+      // The outer overlay already shows the fake version of the inner text.
+      parts.push(`${all} ${all}::after{content:none!important;}`);
+    }
+    if (settings.preview) {
+      parts.push(`${all}{outline:2px dashed ${PREVIEW_COLOR}!important;outline-offset:1px!important;}`);
     }
     return parts.join('\n');
   }
@@ -185,7 +228,9 @@
     return quote === null && stack.length === 0;
   }
 
-  const api = { MASK_ATTR, PICKER_ATTR, PIXELATE_FILTER_ID, pixelSize, renderPixelateSvg, staticSelectorList, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
+  const api = { MASK_ATTR, PICKER_ATTR, FAKE_ATTR, FAKE_POS_ATTR, PIXELATE_FILTER_ID, PREVIEW_COLOR, PERSON_NAME_SELECTORS,
+    WORKSPACE_NAME_SELECTORS_LIST: () => `:is(${WORKSPACE_NAME_SELECTORS.join(',')})`, personSelectorList,
+    pixelSize, renderPixelateSvg, staticSelectorList, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
 
   root.FabricMask = Object.assign(root.FabricMask || {}, api);
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

@@ -20,6 +20,22 @@
   </header>
 
   <main id="body">
+    <section class="always quick">
+      <button id="curtain" class="btn toggle" type="button" aria-pressed="false" data-i18n-title="curtainButtonHint">
+        <span aria-hidden="true">❚❚</span><span data-i18n="curtainButton"></span>
+      </button>
+      <button id="preview" class="btn toggle" type="button" aria-pressed="false" data-i18n-title="previewButtonHint">
+        <span aria-hidden="true">✓</span><span data-i18n="previewButton"></span>
+      </button>
+    </section>
+
+    <section>
+      <label class="row" for="profile">
+        <span class="label" data-i18n="sectionProfile"></span>
+        <select id="profile"></select>
+      </label>
+    </section>
+
     <section>
       <h2 id="detect-heading" data-i18n="sectionDetect"></h2>
       <div class="categories" role="group" aria-labelledby="detect-heading">
@@ -28,6 +44,7 @@
         <label class="check"><input type="checkbox" data-category="endpoint"><span><b data-i18n="catEndpoint"></b><small data-i18n="catEndpointHint"></small></span></label>
         <label class="check"><input type="checkbox" data-category="secret"><span><b data-i18n="catSecret"></b><small data-i18n="catSecretHint"></small></span></label>
         <label class="check"><input type="checkbox" data-category="userProfile"><span><b data-i18n="catUserProfile"></b><small data-i18n="catUserProfileHint"></small></span></label>
+        <label class="check"><input type="checkbox" data-category="learnedNames"><span><b data-i18n="catLearnedNames"></b><small data-i18n="catLearnedNamesHint"></small></span></label>
         <label class="check"><input type="checkbox" data-category="workspaceNames"><span><b data-i18n="catWorkspaceNames"></b><small data-i18n="catWorkspaceNamesHint"></small></span></label>
         <label class="check"><input type="checkbox" data-category="ipAddress"><span><b data-i18n="catIpAddress"></b><small data-i18n="catIpAddressHint"></small></span></label>
       </div>
@@ -38,6 +55,7 @@
       <div class="segmented" role="radiogroup" data-i18n-aria-label="sectionAppearance">
         <label><input type="radio" name="mode" value="pixelate"><span data-i18n="modePixelate"></span></label>
         <label><input type="radio" name="mode" value="blur"><span data-i18n="modeBlur"></span></label>
+        <label><input type="radio" name="mode" value="fake"><span data-i18n="modeFake"></span></label>
         <label><input type="radio" name="mode" value="redact"><span data-i18n="modeRedact"></span></label>
       </div>
       <label id="blur-row" class="row">
@@ -45,8 +63,9 @@
         <input id="blurPx" type="range" min="2" max="20" step="1">
         <output id="blurPx-value"></output>
       </label>
-      <label class="row toggle-row"><span data-i18n="revealOnHover"></span><span class="switch"><input id="revealOnHover" type="checkbox" role="switch"><span class="track"></span></span></label>
+      <label class="row toggle-row"><span data-i18n="stripTooltips"></span><span class="switch"><input id="stripTooltips" type="checkbox" role="switch"><span class="track"></span></span></label>
       <label class="row toggle-row"><span data-i18n="maskTitle"></span><span class="switch"><input id="maskTitle" type="checkbox" role="switch"><span class="track"></span></span></label>
+      <label class="row toggle-row"><span data-i18n="revealOnHover"></span><span class="switch"><input id="revealOnHover" type="checkbox" role="switch"><span class="track"></span></span></label>
     </section>
 
     <section class="actions">

@@ -36,6 +36,25 @@
       </div>
     </form>
 
+    <section class="card">
+      <h2 data-i18n="sectionProfiles"></h2>
+      <p class="muted" data-i18n="profilesHint"></p>
+      <form id="profile-form" class="inline-form">
+        <input id="profile-name" type="text" maxlength="60" required data-i18n-placeholder="profileNamePlaceholder" data-i18n-aria-label="sectionProfiles">
+        <button type="submit" class="btn" data-i18n="saveProfile"></button>
+      </form>
+      <ul id="profile-list" class="item-list"></ul>
+      <p id="no-profiles" class="muted" data-i18n="noProfiles"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="learnedNamesTitle"></h2>
+      <p class="muted" data-i18n="learnedNamesHint"></p>
+      <ul id="learned-list" class="chips"></ul>
+      <p id="no-learned" class="muted" data-i18n="learnedNamesEmpty"></p>
+      <button type="button" id="clear-learned" class="btn" data-i18n="clearLearned"></button>
+    </section>
+
     <section class="card note">
       <h2 data-i18n="limitationsTitle"></h2>
       <p class="muted" data-i18n="limitationsText"></p>

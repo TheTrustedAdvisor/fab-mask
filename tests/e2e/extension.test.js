@@ -187,3 +187,111 @@ test('element picker adds a selector for the clicked element and stops in all fr
   assert.equal(await nb.locator('#code').getAttribute('data-fabric-mask-picker'), null);
   await page.close();
 });
+
+test('v1.2: tooltips, learned names, fake data, preview and curtain in the real browser', async () => {
+  await worker.evaluate(() => chrome.storage.local.clear());
+  const page = await context.newPage();
+  await page.goto(PORTAL);
+  await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
+
+  // Tooltip of a sensitive title is masked
+  assert.equal(await page.getAttribute('#tip', 'title'), '••••••');
+
+  // "Jane Doe" from the owner column is learned and then masked in the description
+  await page.waitForFunction(() => document.querySelector('#desc').hasAttribute('data-fabric-mask'), null, { timeout: 5000 });
+  const learned = await worker.evaluate(async () => (await chrome.storage.local.get('learnedNames')).learnedNames);
+  assert.ok(learned.includes('Jane Doe'));
+
+  // Fake data: the overlay text is rendered via ::after, the original text is invisible
+  await setSettings({ mode: 'fake' });
+  await page.waitForFunction(() => document.querySelector('#ws-id').hasAttribute('data-fabric-fake'));
+  const after = await page.$eval('#ws-id', (el) => getComputedStyle(el, '::after').content);
+  assert.match(after, /^"Workspace ID: [0-9a-f]{8}-/);
+  assert.ok(!after.includes('4e864cf8'));
+  assert.equal(await page.$eval('#ws-id', (el) => getComputedStyle(el).webkitTextFillColor), 'rgba(0, 0, 0, 0)');
+
+  // Preview: outline + badge
+  await setSettings({ mode: 'fake', preview: true });
+  await page.waitForSelector('fab-mask-badge', { state: 'attached' });
+  assert.match(await page.$eval('#ws-id', (el) => getComputedStyle(el).outlineStyle), /dashed/);
+
+  // Curtain covers the whole viewport (topmost element is the overlay host)
+  await worker.evaluate(() => chrome.storage.local.set({ curtain: true }));
+  await page.waitForSelector('fab-mask-curtain', { state: 'attached' });
+  assert.equal(await page.evaluate(() => document.elementFromPoint(200, 200).localName), 'fab-mask-curtain');
+  await worker.evaluate(() => chrome.storage.local.set({ curtain: false }));
+  await page.waitForSelector('fab-mask-curtain', { state: 'detached' });
+  await page.close();
+});
+
+test('v1.2: popup applies a built-in profile and toggles curtain/preview', async () => {
+  await worker.evaluate(() => chrome.storage.local.clear());
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${extensionId}/popup/popup.html`);
+  await page.selectOption('#profile', 'screenshot');
+  await page.waitForFunction(async () => (await chrome.storage.local.get('settings')).settings?.mode === 'redact');
+  let s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.equal(s.activeProfile, 'screenshot');
+  assert.equal(s.categories.workspaceNames, true);
+  // a manual change switches back to "custom"
+  await page.locator('[data-category="ipAddress"]').uncheck();
+  await page.waitForFunction(async () => (await chrome.storage.local.get('settings')).settings?.activeProfile === 'custom');
+  assert.equal(await page.inputValue('#profile'), 'custom');
+  await page.click('#curtain');
+  assert.equal(await worker.evaluate(async () => (await chrome.storage.local.get('curtain')).curtain), true);
+  assert.equal(await page.getAttribute('#curtain', 'aria-pressed'), 'true');
+  await page.click('#curtain');
+  await page.click('#preview');
+  await page.waitForFunction(async () => (await chrome.storage.local.get('settings')).settings?.preview === true);
+  s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.equal(s.activeProfile, 'custom');
+  await page.close();
+});
+
+test('performance: large lists with owners, tooltips and IDs stay fast (all features on)', async () => {
+  await worker.evaluate(() => chrome.storage.local.clear());
+  const page = await context.newPage();
+  await page.goto(PORTAL);
+  await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
+
+  // Renders N rows like a Fabric list, then re-renders their text R times (virtual scrolling).
+  const run = () => page.evaluate(async () => {
+    const N = 3000, R = 20;
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+    const t0 = performance.now();
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < N; i++) {
+      const row = document.createElement('div');
+      row.setAttribute('role', 'row');
+      row.className = 'row';
+      row.innerHTML = `<span class="col col-name" title="Item ${i}">item_${i}</span>` +
+        `<span class="col col-owner" data-testid="fluentListCell.owner" title="Person ${i % 50} Name">Person ${i % 50} Name</span>` +
+        `<span class="col">4e864cf8-386d-4067-bfa7-${String(i).padStart(12, '0')}</span>`;
+      frag.appendChild(row);
+    }
+    host.appendChild(frag);
+    await new Promise(requestAnimationFrame);
+    const insertMs = performance.now() - t0;
+    const t1 = performance.now();
+    const cells = host.querySelectorAll('.col-name');
+    for (let r = 0; r < R; r++) {
+      for (let i = 0; i < 200; i++) cells[(r * 200 + i) % N].firstChild.data = `item_${r}_${i}`;
+      await new Promise(requestAnimationFrame);
+    }
+    const churnMs = performance.now() - t1;
+    host.remove();
+    return { insertMs, churnMs };
+  });
+
+  await setSettings({ enabled: false });
+  const off = await run();
+  await setSettings({ enabled: true, mode: 'fake', stripTooltips: true, preview: true, categories: { learnedNames: true, workspaceNames: true } });
+  await page.waitForTimeout(300);
+  const on = await run();
+  console.log(`perf: off insert ${off.insertMs.toFixed(0)}ms churn ${off.churnMs.toFixed(0)}ms | on insert ${on.insertMs.toFixed(0)}ms churn ${on.churnMs.toFixed(0)}ms`);
+  // Budgets are generous for CI machines; the freeze bug took tens of seconds.
+  assert.ok(on.insertMs < off.insertMs + 1500, `insert overhead too high: ${on.insertMs} vs ${off.insertMs}`);
+  assert.ok(on.churnMs < off.churnMs + 1500, `re-render overhead too high: ${on.churnMs} vs ${off.churnMs}`);
+  await page.close();
+});

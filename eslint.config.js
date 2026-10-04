@@ -27,6 +27,6 @@ module.exports = [
   },
   {
     files: ['scripts/**/*.mjs'],
-    languageOptions: { ecmaVersion: 2022, sourceType: 'module', globals: { ...globals.node, ...globals.webextensions } }
+    languageOptions: { ecmaVersion: 2022, sourceType: 'module', globals: { ...globals.node, ...globals.browser, ...globals.webextensions } }
   }
 ];

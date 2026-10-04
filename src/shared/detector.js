@@ -52,36 +52,69 @@
     return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  function buildSources(settings) {
-    const sources = [];
+  function wholeWord(term) {
+    // Whole-word match where the term starts/ends with a word character ("AB" ≠ "ABOUT").
+    const start = /^\w/.test(term) ? String.raw`(?<![\p{L}\p{N}_])` : '';
+    const end = /\w$/.test(term) ? String.raw`(?![\p{L}\p{N}_])` : '';
+    return start + escapeRegExp(term) + end;
+  }
+
+  function literalSources(list, minLength) {
+    return (list || [])
+      .filter((t) => typeof t === 'string' && t.trim().length >= minLength)
+      .map((t) => t.trim())
+      // Longest first, so "Jane Doe Smith" wins over "Jane Doe" at the same position.
+      .sort((a, b) => b.length - a.length)
+      .map(wholeWord);
+  }
+
+  /** One group per kind; the kind is reported for every match (used by the fake-data mode). */
+  function buildGroups(settings, learnedNames) {
+    const groups = [];
     const categories = (settings && settings.categories) || {};
     for (const key of DETECTABLE_CATEGORIES) {
-      if (categories[key]) sources.push(...PATTERNS[key]);
+      if (categories[key]) groups.push({ kind: key, sources: PATTERNS[key] });
     }
-    const terms = (settings && settings.customTerms) || [];
-    for (const term of terms) {
-      if (typeof term !== 'string' || term.trim().length < 2) continue;
-      const t = term.trim();
-      // Whole-word match where the term starts/ends with a word character ("AB" ≠ "ABOUT").
-      const start = /^\w/.test(t) ? String.raw`(?<![\p{L}\p{N}_])` : '';
-      const end = /\w$/.test(t) ? String.raw`(?![\p{L}\p{N}_])` : '';
-      sources.push(start + escapeRegExp(t) + end);
+    const terms = literalSources(settings && settings.customTerms, 2);
+    if (terms.length) groups.push({ kind: 'term', sources: terms });
+    if (categories.learnedNames) {
+      const names = literalSources(learnedNames, 3);
+      if (names.length) groups.push({ kind: 'name', sources: names });
     }
-    return sources;
+    return groups;
   }
 
   const NOOP_DETECTOR = Object.freeze({
     active: false,
     test: () => false,
-    redact: (text) => text
+    redact: (text) => text,
+    replace: (text) => text
   });
 
-  function createDetector(settings) {
-    const sources = buildSources(settings);
-    if (sources.length === 0) return NOOP_DETECTOR;
-    const source = sources.map((s) => `(?:${s})`).join('|');
+  /**
+   * @param settings      normalized settings
+   * @param learnedNames  person names learned from the portal (used when categories.learnedNames)
+   */
+  function createDetector(settings, learnedNames = []) {
+    const groups = buildGroups(settings, learnedNames);
+    if (groups.length === 0) return NOOP_DETECTOR;
+    const source = groups
+      .map((g) => `(?<${g.kind}>${g.sources.map((s) => `(?:${s})`).join('|')})`)
+      .join('|');
     const testRe = new RegExp(source, 'iu');
     const globalRe = new RegExp(source, 'giu');
+    const kinds = groups.map((g) => g.kind);
+
+    function replace(text, fn) {
+      if (typeof text !== 'string' || !text) return text;
+      globalRe.lastIndex = 0;
+      return text.replace(globalRe, (...args) => {
+        const named = args[args.length - 1];
+        const kind = kinds.find((k) => named[k] !== undefined) || 'unknown';
+        return fn(args[0], kind);
+      });
+    }
+
     return {
       active: true,
       test(text) {
@@ -95,10 +128,10 @@
         return false;
       },
       redact(text, replacement = '••••••') {
-        if (typeof text !== 'string' || !text) return text;
-        globalRe.lastIndex = 0;
-        return text.replace(globalRe, replacement);
-      }
+        return replace(text, () => replacement);
+      },
+      /** Replaces every match with fn(match, kind); kind ∈ guid|email|endpoint|secret|ipAddress|term|name. */
+      replace
     };
   }
 

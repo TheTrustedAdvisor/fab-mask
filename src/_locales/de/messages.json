@@ -3,7 +3,7 @@
     "message": "Fab Mask"
   },
   "extDescription": {
-    "message": "Versteckt sensible Informationen (IDs, E-Mail-Adressen, Endpunkte, Secrets, Namen) im Microsoft Fabric- und Power BI-Portal für Demos und Bildschirmfreigaben."
+    "message": "Versteckt IDs, E-Mails, Namen, Endpunkte und Secrets im Fabric- und Power BI-Portal – verpixelt, unscharf, geschwärzt, gefälscht."
   },
   "commandToggle": {
     "message": "Maskierung ein-/ausschalten"
@@ -60,7 +60,7 @@
     "message": "Angemeldeter Benutzer"
   },
   "catUserProfileHint": {
-    "message": "Kontomenü, Avatare, Besitzernamen, Workspace-Bilder"
+    "message": "Kontomenü, Avatare, Besitzer- und Admin-Namen, Workspace-Bilder"
   },
   "sectionAppearance": {
     "message": "Darstellung"
@@ -149,5 +149,106 @@
   },
   "modePixelate": {
     "message": "Pixel"
+  },
+  "commandCurtain": {
+    "message": "Vorhang ein-/ausblenden (Ansicht pausieren)"
+  },
+  "commandPreview": {
+    "message": "Prüfmodus umschalten (maskierte Bereiche markieren)"
+  },
+  "statusCurtain": {
+    "message": "Vorhang geschlossen"
+  },
+  "catLearnedNames": {
+    "message": "Erkannte Personennamen"
+  },
+  "catLearnedNamesHint": {
+    "message": "Namen aus Besitzer-/Admin-Feldern, überall maskiert"
+  },
+  "modeFake": {
+    "message": "Fake-Daten"
+  },
+  "stripTooltips": {
+    "message": "Tooltips maskieren"
+  },
+  "sectionProfile": {
+    "message": "Profil"
+  },
+  "profileCustom": {
+    "message": "Benutzerdefiniert"
+  },
+  "profileCustomerDemo": {
+    "message": "Kunden-Demo"
+  },
+  "profileRecording": {
+    "message": "Aufzeichnung (Fake-Daten)"
+  },
+  "profileScreenshot": {
+    "message": "Screenshots (Schwärzen)"
+  },
+  "profileInternal": {
+    "message": "Interne Schulung"
+  },
+  "curtainButton": {
+    "message": "Vorhang"
+  },
+  "curtainButtonHint": {
+    "message": "Verdeckt alle Fabric-Tabs mit einer neutralen Fläche (Alt+Shift+B)"
+  },
+  "curtainTitle": {
+    "message": "Ansicht pausiert"
+  },
+  "curtainHint": {
+    "message": "Fab Mask verdeckt diese Seite. Mit Alt+Shift+B oder über das Erweiterungs-Popup geht es weiter."
+  },
+  "previewButton": {
+    "message": "Prüfmodus"
+  },
+  "previewButtonHint": {
+    "message": "Markiert alles, was maskiert wird (Alt+Shift+P)"
+  },
+  "previewBadge": {
+    "message": "Fab Mask Prüfmodus · $COUNT$ maskiert · Alt+Shift+P beendet",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "sectionProfiles": {
+    "message": "Profile"
+  },
+  "profilesHint": {
+    "message": "Speichere die aktuellen Darstellungs- und Erkennungseinstellungen als Profil und wechsle im Popup zwischen ihnen. Eigene Begriffe und Selektoren gelten für alle Profile."
+  },
+  "profileNamePlaceholder": {
+    "message": "Profilname, z. B. „Workshop Kunde X“"
+  },
+  "saveProfile": {
+    "message": "Aktuelle Einstellungen als Profil speichern"
+  },
+  "deleteProfile": {
+    "message": "Löschen"
+  },
+  "noProfiles": {
+    "message": "Noch keine eigenen Profile."
+  },
+  "learnedNamesTitle": {
+    "message": "Erkannte Personennamen"
+  },
+  "learnedNamesHint": {
+    "message": "Fab Mask sammelt Namen aus Besitzer- und Admin-Feldern und maskiert sie überall im Portal. Nur in diesem Browser-Profil gespeichert."
+  },
+  "learnedNamesEmpty": {
+    "message": "Noch keine Namen erkannt – öffne einen Workspace oder den OneLake-Katalog."
+  },
+  "clearLearned": {
+    "message": "Alle Namen vergessen"
+  },
+  "clearLearnedConfirm": {
+    "message": "Alle erkannten Namen vergessen?"
+  },
+  "removeName": {
+    "message": "Entfernen"
   }
 }

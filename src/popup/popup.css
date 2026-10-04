@@ -18,7 +18,7 @@ h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: v
 .check b { font-weight: 600; }
 .check small { color: var(--fm-muted); font-size: 11.5px; }
 .segmented {
-  display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--fm-border);
+  display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--fm-border);
   border-radius: 4px; overflow: hidden; margin-bottom: 8px;
 }
 .segmented label { position: relative; text-align: center; cursor: pointer; }
@@ -35,4 +35,16 @@ h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: v
 .footer {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;
   padding: 10px 14px; border-top: 1px solid var(--fm-border); background: var(--fm-surface);
+}
+
+.segmented label + label { border-left: 0; }
+.segmented label:nth-child(n+3) span { border-top: 1px solid var(--fm-border); }
+.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn.toggle[aria-pressed="true"] { background: var(--fm-accent); border-color: var(--fm-accent); color: var(--fm-on-accent); }
+#curtain[aria-pressed="true"] { background: #424242; border-color: #424242; color: #fff; }
+#preview[aria-pressed="true"] { background: #13a10e; border-color: #13a10e; color: #fff; }
+.row .label { flex: 1; font-weight: 600; }
+select {
+  flex: 1.6; min-width: 0; padding: 5px 8px; border-radius: 4px; border: 1px solid var(--fm-border);
+  background: var(--fm-bg); color: var(--fm-text); font: inherit;
 }

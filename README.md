@@ -4,143 +4,160 @@
 [![Release](https://img.shields.io/github/v/release/TheTrustedAdvisor/fab-mask)](https://github.com/TheTrustedAdvisor/fab-mask/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Browser-Erweiterung für **Chrome und Edge**, die sensible Informationen im **Microsoft Fabric-Portal**
-(`app.fabric.microsoft.com`, inkl. Power BI) unscharf macht oder schwärzt – für Demos,
-Bildschirmfreigaben, Screenshots und Aufzeichnungen.
+Browser extension for **Chrome and Edge** that hides sensitive information in the **Microsoft Fabric
+portal** (`app.fabric.microsoft.com`, including Power BI) – for demos, screen sharing, screenshots and
+recordings.
 
-Inspiriert von [clarkio/azure-mask](https://github.com/clarkio/azure-mask) („Az Mask“) für das Azure-Portal.
+Inspired by [clarkio/azure-mask](https://github.com/clarkio/azure-mask) ("Az Mask") for the Azure portal.
 
-| Ohne Fab Mask | Mit Fab Mask |
+| Without Fab Mask | Pixelate (default) |
 |---|---|
-| ![Ohne Maskierung](docs/images/demo-unmasked.png) | ![Mit Maskierung](docs/images/demo-masked.png) |
+| ![Without masking](docs/images/demo-unmasked.png) | ![Pixelated](docs/images/demo-masked.png) |
+| **Fake data** | **Preview mode** |
+| ![Fake data](docs/images/demo-fake.png) | ![Preview mode](docs/images/demo-preview.png) |
 
-<sub>Screenshots einer Demo-Seite mit erfundenen Daten ([docs/demo](docs/demo/workspace.html)).</sub>
+<sub>Screenshots of a demo page with made-up data ([docs/demo](docs/demo/workspace.html)).</sub>
 
 ## Installation
 
-| Weg | Für wen | Anleitung |
+| Option | For | Guide |
 |---|---|---|
-| **Entpackt laden** (ZIP aus dem Release) | Einzelpersonen, sofort | [unten](#schnellstart-entpackt-laden) |
-| **Unternehmensrichtlinie** (signiertes CRX, Auto-Update) | IT / verwaltete Geräte (Intune, GPO, Jamf) | [docs/installation.md](docs/installation.md#unternehmensweit-per-richtlinie) |
-| **Chrome Web Store / Edge Add-ons** | alle | in Vorbereitung – siehe [docs/store-listing.md](docs/store-listing.md) |
+| **Load unpacked** (ZIP from the release) | Individuals, right away | [below](#quick-start-load-unpacked) |
+| **Enterprise policy** (signed CRX, auto-update) | IT / managed devices (Intune, GPO, Jamf) | [docs/installation.md](docs/installation.md#enterprise-deployment-via-policy) |
 
-> Chrome und Edge erlauben unter Windows und macOS keine Installation von `.crx`-Dateien per
-> Doppelklick außerhalb der Stores. Für Einzelpersonen ist daher „Entpackt laden“ der direkte Weg.
+> On Windows and macOS, Chrome and Edge do not allow installing `.crx` files from outside their
+> stores by double-click. For individuals, "Load unpacked" is the direct way.
 
-### Schnellstart: entpackt laden
+### Quick start: load unpacked
 
-1. Neueste **`fab-mask-<version>.zip`** von der [Release-Seite](https://github.com/TheTrustedAdvisor/fab-mask/releases/latest) herunterladen und in einen dauerhaften Ordner entpacken.
-2. **Chrome:** `chrome://extensions` · **Edge:** `edge://extensions` öffnen.
-3. **Entwicklermodus** einschalten → **Entpackte Erweiterung laden** → den entpackten Ordner wählen.
-4. Offene Fabric-Tabs neu laden.
+1. Download the latest **`fab-mask-<version>.zip`** from the [releases page](https://github.com/TheTrustedAdvisor/fab-mask/releases/latest) and unzip it into a permanent folder.
+2. Open **Chrome:** `chrome://extensions` · **Edge:** `edge://extensions`.
+3. Turn on **Developer mode** → **Load unpacked** → select the unzipped folder.
+4. Reload open Fabric tabs.
 
-Details, Updates und Fehlerbehebung: [docs/installation.md](docs/installation.md).
+Details, updates and troubleshooting: [docs/installation.md](docs/installation.md).
 
-## Was wird maskiert?
+## What gets masked?
 
-| Kategorie | Standard | Beispiele |
+| Category | Default | Examples |
 |---|---|---|
-| IDs (GUIDs) | an | Workspace-, Item-, Tenant-, Capacity-IDs – auch mitten im Text oder in URLs |
-| E-Mail-Adressen / UPNs | an | Besitzer, Zugriffslisten, Gastkonten (`…#EXT#@…`) |
-| Endpunkte & Connection Strings | an | SQL-Endpunkte (`*.datawarehouse.fabric.microsoft.com`), OneLake-/`abfss://`-Pfade, XMLA (`powerbi://…`), KQL-URIs, Datenquellen wie `Extension{"extensionDataSourcePath":"https://org.crm4.dynamics.com"}`, SharePoint, Databricks, Snowflake … |
-| Schlüssel & Tokens | an | `AccountKey=`, SAS-`sig=`, `Password=`, JWTs, Storage-Keys |
-| Angemeldeter Benutzer | an | Avatar, Name/E-Mail/Tenant im Kontomenü, Spalte „Owner“, Owner im OneLake-Katalog, Admins in Domänen, Workspace-Bild |
-| Workspace-Namen | aus | Workspace-Titel, Navigation, Workspace-Liste, „Location“ im OneLake-Katalog |
-| IP-Adressen | aus | IPv4 (Gateways, Firewall-Regeln) |
-| Eigene Begriffe | – | Kunden-, Tenant-, Projekt- oder Personennamen (ganze Wörter) |
-| Eigene CSS-Selektoren | – | per **Element-Picker** direkt auf der Seite hinzufügen |
+| IDs (GUIDs) | on | Workspace, item, tenant and capacity IDs – also inside text and URLs |
+| E-mail addresses / UPNs | on | Owners, access lists, guest accounts (`…#EXT#@…`) |
+| Endpoints & connection strings | on | SQL endpoints (`*.datawarehouse.fabric.microsoft.com`), OneLake/`abfss://` paths, XMLA (`powerbi://…`), KQL URIs, data sources such as `Extension{"extensionDataSourcePath":"https://org.crm4.dynamics.com"}`, SharePoint, Databricks, Snowflake … |
+| Keys & tokens | on | `AccountKey=`, SAS `sig=`, `Password=`, JWTs, storage keys |
+| Signed-in user | on | Avatar, name/e-mail/tenant in the account menu, "Owner" columns, OneLake catalog owner, domain admins, workspace image |
+| Learned person names | on | Names from owner/admin fields are learned and masked **everywhere** (descriptions, lineage, search …) |
+| Workspace names | off | Workspace title, navigation, workspace list, "Location" in the OneLake catalog |
+| IP addresses | off | IPv4 (gateways, firewall rules) |
+| Custom terms | – | Customer, tenant, project or person names (whole words) |
+| Custom CSS selectors | – | Added directly on the page with the **element picker** |
 
-Abgedeckt sind auch **Notebooks** (eigener Frame auf `pbides.powerbi.com`, inkl. Code-Zellen und
-Ausgabetabellen), der **Lakehouse-Explorer** (`pbilhe.powerbi.com`), **Pipelines**
-(`pbidpe.powerbi.com`) und der **OneLake-Katalog**.
+Also covered: **notebooks** (separate frame on `pbides.powerbi.com`, including code cells and outputs),
+the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerbi.com`) and the
+**OneLake catalog**.
 
-### Bedienung
+### Usage
 
 <img src="docs/images/popup-light.png" alt="Popup" width="260" align="right">
 
-- **Ein/Aus** per Popup oder **Alt+Shift+M** (Badge zeigt „OFF“)
-- Modus **Pixel** (Mosaik, Standard), **Unscharf** oder **Schwärzen**; Stärke einstellbar;
-  optional „Bei Mouseover anzeigen“
-- **Tab-Titel** wird ebenfalls bereinigt
-- **Element auswählen**: im Popup klicken, dann auf ein Element der Seite – es bleibt künftig maskiert
-- **Eigene Begriffe & Selektoren** auf der Optionsseite
-- Änderungen wirken **sofort**, ohne Neuladen
-- Deutsch und Englisch
+| Shortcut | Action |
+|---|---|
+| **Alt+Shift+M** | Masking on/off (badge "OFF") |
+| **Alt+Shift+B** | **Curtain**: instantly cover all Fabric tabs with a neutral overlay (badge "❚❚") |
+| **Alt+Shift+P** | **Preview mode**: outline everything that is masked, with a counter (badge "✓") |
+
+- **Profiles**: *Customer demo*, *Recording (fake data)*, *Screenshots (redact)*, *Internal training* –
+  or save your own on the options page
+- **Modes**: **Pixelate** (mosaic, default), **Blur**, **Fake data** (plausible, consistent replacement
+  values – same person ⇒ same fake name) or **Redact**
+- **Mask tooltips**: native hover tooltips no longer reveal names or e-mails
+- The **tab title** is cleaned as well
+- **Pick element**: click in the popup, then on any element – it stays masked from then on
+- **Options page**: custom terms & selectors, profiles, list of learned names (remove individually or
+  forget all)
+- Changes apply **instantly**, no reload · UI in English and German
 
 <br clear="right">
 
-## Berechtigungen & Datenschutz
+## Permissions & privacy
 
-- Einzige Berechtigung: `storage`. Kein `tabs`, kein `scripting`, keine weiteren Host-Berechtigungen.
-- Die Erweiterung sendet **keine Daten** irgendwohin – keine Telemetrie, keine Netzwerkzugriffe.
-- Einstellungen liegen nur lokal (`chrome.storage.local`), bewusst **nicht** synchronisiert,
-  damit Kunden- oder Personennamen nicht ins Google-/Microsoft-Konto wandern.
+- Only permission: `storage`. No `tabs`, no `scripting`, no host permissions beyond the content-script
+  matches.
+- The extension sends **no data** anywhere – no telemetry, no network requests.
+- Settings, profiles and **learned person names** are stored locally only (`chrome.storage.local`) and
+  intentionally **not** synced, so customer or person names never end up in your Google/Microsoft
+  account. Learned names can be reviewed and deleted on the options page.
+- Fake values are salted per installation, so they cannot be checked against guessed originals.
+- No code runs in the page's JavaScript context; the extension does not modify any page APIs.
 
-Siehe [PRIVACY.md](PRIVACY.md).
+See [PRIVACY.md](PRIVACY.md).
 
-## Einschränkungen
+## Limitations
 
-- Die **Adressleiste** (enthält Workspace- und Item-IDs) kann keine Erweiterung verändern –
-  nur den Fensterinhalt oder im Vollbild (F11) teilen.
-- **Native Tooltips** (`title`-Attribute) und auf **Canvas** gezeichnete Inhalte
-  (z. B. Report-Visuals) werden nicht erfasst.
-- Personennamen werden über die Owner-/Profil-Selektoren oder **eigene Begriffe** erkannt.
-- Eigene Begriffe/Selektoren greifen, sobald die Einstellungen geladen sind (wenige Millisekunden
-  nach Seitenstart, lange bevor das Portal Inhalte rendert).
-- Das Portal-Markup ändert sich laufend. Rutscht etwas durch: Element-Picker verwenden und gern
-  ein [Issue](https://github.com/TheTrustedAdvisor/fab-mask/issues) eröffnen – **ohne** echte Daten im Screenshot.
+- The **address bar** (which contains workspace and item IDs) cannot be changed by any extension –
+  share only the window content or use full screen (F11).
+- Content drawn on a **canvas** (e.g. report visuals) is not covered.
+- Person names are recognized via owner/profile fields, learned names or **custom terms**.
+- Custom terms and selectors apply as soon as the settings are loaded (milliseconds after page start,
+  long before the portal renders content).
+- Pixelate and blur reliably hide content from screen-share viewers. For published screenshots of
+  highly sensitive values, **Redact** is the safest choice, since mosaics of known fonts can in theory
+  be reconstructed.
+- Fake data replaces the text visually; copy & paste still copies the original.
+- The portal markup changes constantly. If something slips through: use the element picker and please
+  open an [issue](https://github.com/TheTrustedAdvisor/fab-mask/issues) – **without** real data in
+  screenshots.
 
-- Pixel- und Unscharf-Modus verbergen Inhalte zuverlässig für Zuschauer einer Bildschirmfreigabe.
-  Für veröffentlichte Screenshots mit besonders kritischen Werten ist **Schwärzen** die sicherste Wahl,
-  da Mosaike bei bekannter Schrift theoretisch rekonstruiert werden können.
+**Always double-check before sharing your screen.** The extension is an aid, not a guarantee.
 
-**Vor jeder Bildschirmfreigabe selbst prüfen.** Die Erweiterung ist eine Hilfe, keine Garantie.
-
-## Entwicklung
+## Development
 
 ```bash
 npm install
-npx playwright install chromium   # einmalig, für E2E-Tests und Screenshots
-npm test                          # Unit- und DOM-Tests (node:test + jsdom)
-npm run test:e2e                  # End-to-End mit der echten Erweiterung in Chromium
+npx playwright install chromium   # once, for E2E tests and screenshots
+npm test                          # unit and DOM tests (node:test + jsdom)
+npm run test:e2e                  # end-to-end with the real extension in Chromium (incl. a perf test)
 npm run lint
 npm run build                     # dist/fab-mask-<version>.zip
-npm run build:signed              # zusätzlich signiertes CRX + updates.xml (Schlüssel nötig)
-npm run screenshots               # docs/images neu erzeugen
+npm run build:signed              # plus signed CRX + updates.xml (needs the signing key)
+npm run screenshots               # regenerate docs/images
 ```
 
-Die E2E-Tests liefern Fabric-ähnliche Fixtures unter den echten Hostnamen aus (Requests werden
-abgefangen, kein Netzwerkzugriff).
+The E2E tests serve Fabric-like fixtures on the real host names (requests are intercepted, no network
+access).
 
-### Aufbau
+### Architecture
 
 ```
 src/
   manifest.json
-  shared/settings.js        Einstellungsmodell, Storage, Nachrichtentypen
-  shared/detector.js        Regex-Erkennung je Kategorie (linear begrenzt, ReDoS-getestet)
-  shared/styles.js          CSS-Generierung, Selektoren für Benutzer/Workspaces
-  content/masker.js         Content Script: MutationObserver, Inputs, Shadow DOM, Titel
-  content/picker.js         Element-Picker + Selektor-Generierung
-  background/service-worker.js   Tastenkürzel, Badge, Picker-Koordination
-  popup/, options/          Oberfläche
+  shared/settings.js        Settings model, storage, profiles, learned names, message types
+  shared/detector.js        Regex detection per category (bounded, ReDoS-tested), match kinds
+  shared/fake.js            Deterministic, salted fake values (names, GUIDs, e-mails, hosts …)
+  shared/styles.js          CSS generation, selectors for user/person/workspace fields
+  content/masker.js         Content script: MutationObserver, inputs, tooltips, shadow DOM, title,
+                            fake overlays, curtain, preview badge, name learning
+  content/picker.js         Element picker + selector generation
+  background/service-worker.js   Shortcuts, badge, picker coordination, learned-name merging
+  popup/, options/          UI
 ```
 
-Elemente, deren **direkter Text** (oder Input-Wert, oder ganze Monaco-Editorzeile) einem Muster
-entspricht, erhalten das Attribut `data-fabric-mask`; ein injiziertes Stylesheet macht sie
-unscharf. Der MutationObserver verarbeitet Änderungen synchron vor dem nächsten Rendern, sodass
-neue Inhalte nicht unmaskiert aufblitzen. Textknoten werden nie verändert – das hält Angular und
-Monaco stabil.
+Elements whose **direct text** (or input value, or whole Monaco editor line) matches a pattern get the
+`data-fabric-mask` attribute; an injected stylesheet pixelates them. In fake-data mode the element also
+gets `data-fabric-fake`, whose value is laid over the (now invisible) original text via `::after` – the
+page's own text is never modified. The MutationObserver processes changes synchronously before the
+next paint, so new content never flashes unmasked. Text nodes are never touched, which keeps Angular
+and Monaco stable.
 
-### Release
+### Releasing
 
-1. Version in `package.json` **und** `src/manifest.json` erhöhen, `CHANGELOG.md` ergänzen.
+1. Bump the version in `package.json` **and** `src/manifest.json`, update `CHANGELOG.md`.
 2. `git tag vX.Y.Z && git push --tags`
-3. Der Workflow [release.yml](.github/workflows/release.yml) testet, baut ZIP, signiertes CRX und
-   `updates.xml` und veröffentlicht sie als GitHub-Release. Per Richtlinie installierte Browser
-   aktualisieren sich automatisch.
+3. The [release workflow](.github/workflows/release.yml) tests, builds the ZIP, signed CRX and
+   `updates.xml` and publishes them as a GitHub release. Browsers installed via policy update
+   automatically.
 
-## Lizenz
+## License
 
-[MIT](LICENSE) © Matthias Falland. „Microsoft Fabric“ und „Power BI“ sind Marken der Microsoft
-Corporation; dieses Projekt ist nicht mit Microsoft verbunden.
+[MIT](LICENSE) © Matthias Falland. "Microsoft Fabric" and "Power BI" are trademarks of Microsoft
+Corporation; this project is not affiliated with Microsoft.

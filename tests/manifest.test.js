@@ -49,6 +49,13 @@ test('content scripts cover the Fabric portal and workload iframes', () => {
   assert.equal(manifest.content_scripts[0].run_at, 'document_start');
 });
 
+test('store limits: name ≤ 45 and description ≤ 132 characters in every locale', () => {
+  for (const messages of [en, de]) {
+    assert.ok(messages.extName.message.length <= 45);
+    assert.ok(messages.extDescription.message.length <= 132, messages.extDescription.message.length);
+  }
+});
+
 test('locales define the same keys and every key used in HTML/manifest', () => {
   assert.deepEqual(Object.keys(de).sort(), Object.keys(en).sort());
   const used = new Set();

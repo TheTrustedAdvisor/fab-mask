@@ -9,7 +9,7 @@ Everything needed to submit `fab-mask-<version>.zip` from the GitHub release.
 | Category | Productivity / Developer Tools | Productivity / Developer tools |
 | Privacy policy URL | <https://github.com/TheTrustedAdvisor/fab-mask/blob/main/PRIVACY.md> | same |
 | Support / homepage | <https://github.com/TheTrustedAdvisor/fab-mask> | same |
-| Screenshots (1280×800) | `docs/images/demo-unmasked.png`, `demo-masked.png`, `demo-redacted.png`, `options.png` | same |
+| Screenshots (1280×800) | `docs/images/demo-unmasked.png`, `demo-masked.png`, `demo-fake.png`, `demo-preview.png`, `demo-redacted.png` | same |
 | Small promo tile | optional | optional |
 
 Note: a store-installed copy gets a store-assigned extension ID, different from the ID of the
@@ -21,13 +21,9 @@ Fab Mask
 
 ## Short description (≤ 132 characters)
 
-**EN:** Hide IDs, e-mails, endpoints, secrets and names in the Microsoft Fabric & Power BI portal for demos and screen sharing.
-
-**DE:** Versteckt IDs, E-Mails, Endpunkte, Secrets und Namen im Microsoft Fabric- & Power BI-Portal für Demos und Bildschirmfreigaben.
+Hide IDs, e-mails, endpoints, secrets and names in the Microsoft Fabric & Power BI portal for demos and screen sharing.
 
 ## Detailed description
-
-**EN**
 
 Presenting Microsoft Fabric to customers, recording a tutorial or taking screenshots? Fab Mask
 blurs or redacts sensitive information in the Fabric and Power BI portal before it reaches your
@@ -43,31 +39,13 @@ What it hides:
 • Your own terms (customer, project or person names) and any element you pick on the page
 
 Works in notebooks (including code cells and outputs), the lakehouse explorer, pipelines and the
-OneLake catalog. Toggle with Alt+Shift+M. Pixelate, blur or redact mode. English and German.
+OneLake catalog. Pixelate, blur, redact – or replace values with consistent fake data for
+recordings. Learns person names from owner fields and masks them everywhere, hides tooltips,
+"curtain" shortcut to cover the portal instantly, preview mode to check before sharing, and
+profiles for customer demos, recordings and screenshots. English and German.
 
 Privacy: no data collection, no network requests, settings stay local in your browser.
 Not affiliated with Microsoft.
-
-**DE**
-
-Du präsentierst Microsoft Fabric bei Kunden, nimmst ein Tutorial auf oder machst Screenshots?
-Fab Mask macht sensible Informationen im Fabric- und Power BI-Portal unscharf oder schwärzt sie –
-bevor sie in der Bildschirmfreigabe landen.
-
-Was verborgen wird:
-• Workspace-, Item-, Tenant- und Capacity-IDs (GUIDs) – auch in URLs und Pfaden
-• E-Mail-Adressen und UPNs (Besitzer, Zugriffslisten, Gastkonten)
-• SQL-Endpunkte, OneLake-/abfss-Pfade, XMLA- und KQL-URIs, Connection Strings, Datenquellen
-• Schlüssel und Tokens: Account Keys, SAS-Signaturen, Passwörter, JWTs
-• Der angemeldete Benutzer: Avatar, Kontomenü, Besitzer-Spalten
-• Optional: Workspace-Namen, IP-Adressen
-• Eigene Begriffe (Kunden-, Projekt- oder Personennamen) und beliebige Elemente per Auswahl auf der Seite
-
-Funktioniert auch in Notebooks (inkl. Code-Zellen und Ausgaben), im Lakehouse-Explorer, in Pipelines
-und im OneLake-Katalog. Umschalten mit Alt+Shift+M. Modus Pixel, Unscharf oder Schwärzen. Deutsch und Englisch.
-
-Datenschutz: keine Datenerhebung, keine Netzwerkzugriffe, Einstellungen bleiben lokal im Browser.
-Nicht mit Microsoft verbunden.
 
 ## Single purpose (Chrome)
 
