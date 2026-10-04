@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.1.1] – 2026-10-04
+
+### Fixed
+- **Portal froze or stopped loading** (e.g. OneLake catalog, admin portal → Domains). The
+  main-world `attachShadow` hook queued a microtask per shadow root; in Fabric's Angular/zone.js
+  app every microtask triggers change detection, which created new shadow roots – an endless
+  microtask loop. The hook is removed; the extension no longer runs any code in the page's
+  JavaScript context.
+- Shadow roots only receive the masking stylesheet and filter when they actually contain
+  something to mask (Fabric has one shadow root per tooltip), reducing style recalculation.
+
+### Added
+- Admin/member name lists (admin portal → Domains → Admins) are masked as part of
+  "Signed-in user".
+
 ## [1.1.0] – 2026-10-04
 
 ### Added
@@ -39,6 +54,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.1.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.1
 [1.1.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.0
 [1.0.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.1
 [1.0.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.0

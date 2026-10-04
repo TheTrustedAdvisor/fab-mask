@@ -24,8 +24,6 @@
   // Monaco (notebooks, SQL/KQL editors) splits long tokens into several <span>s, so a GUID inside a
   // long OneLake path can straddle two spans. Editor lines are therefore tested as a whole.
   const CODE_LINE_SELECTOR = '.view-line';
-  // Dispatched by shadow-hook.js (main world) whenever the page calls attachShadow().
-  const SHADOW_EVENT = 'fab-mask-shadow-attached';
 
   function createMasker({ window, chrome, FabricMask: FM }) {
     const document = window.document;
@@ -137,7 +135,11 @@
       if (el.hasAttribute(STYLE_MARKER)) return;
       const sensitive = settings.enabled && isSensitive(el);
       if (sensitive) {
-        if (!el.hasAttribute(MASK_ATTR)) el.setAttribute(MASK_ATTR, '');
+        if (!el.hasAttribute(MASK_ATTR)) {
+          el.setAttribute(MASK_ATTR, '');
+          const rootNode = el.getRootNode();
+          if (rootNode !== document && !styleEls.has(rootNode)) styleShadowRootIfNeeded(rootNode);
+        }
       } else if (el.hasAttribute(MASK_ATTR)) {
         el.removeAttribute(MASK_ATTR);
       }
@@ -184,20 +186,24 @@
       if (sr) attachRoot(sr);
     }
 
-    function onShadowAttached(event) {
-      // composedPath()[0] is the real host; event.target is retargeted to the outermost shadow
-      // host when the late root belongs to an element that itself lives in a shadow root.
-      const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
-      const host = path[0] || event.target;
-      if (host && host.nodeType === 1) attachShadowOf(host);
+    // Shadow roots get the stylesheet + filter only once they contain something to mask. Fabric
+    // has many small shadow roots (e.g. one per tooltip) that only hold a <slot>; giving each of
+    // them a <style> and an <svg> made style recalculation needlessly expensive.
+    function styleShadowRootIfNeeded(rootNode) {
+      if (rootNode === document || styleEls.has(rootNode) || !roots.has(rootNode)) return;
+      const selectors = FM.staticSelectorList(settings);
+      if (rootNode.querySelector(`[${MASK_ATTR}]`) || (selectors && rootNode.querySelector(selectors))) {
+        ensureStyle(rootNode);
+      }
     }
 
     function attachRoot(rootNode) {
       if (roots.has(rootNode)) return;
       roots.add(rootNode);
-      ensureStyle(rootNode);
+      if (rootNode === document) ensureStyle(rootNode);
       observer.observe(rootNode, OBSERVE_OPTIONS);
       scan(rootNode);
+      styleShadowRootIfNeeded(rootNode);
     }
 
     function rescanAll() {
@@ -221,7 +227,10 @@
         } else if (m.type === 'childList') {
           touch(touched, m.target);
           for (const added of m.addedNodes) {
-            if (added.nodeType === 1) scan(added);
+            if (added.nodeType !== 1) continue;
+            scan(added);
+            const rootNode = added.getRootNode();
+            if (rootNode !== document && !styleEls.has(rootNode)) styleShadowRootIfNeeded(rootNode);
           }
           if (m.removedNodes.length) removedSomething = true;
         }
@@ -297,6 +306,7 @@
       lastInputValues = new WeakMap();
       applyCss();
       rescanAll();
+      for (const rootNode of roots) styleShadowRootIfNeeded(rootNode);
       updatePolling();
       if (isTopFrame) updateTitle();
     }
@@ -359,7 +369,6 @@
 
     function start() {
       attachRoot(document);
-      document.addEventListener(SHADOW_EVENT, onShadowAttached, true);
       document.addEventListener('input', onInputEvent, true);
       document.addEventListener('change', onInputEvent, true);
       updatePolling();
@@ -375,7 +384,6 @@
 
     function stop() {
       observer.disconnect();
-      document.removeEventListener(SHADOW_EVENT, onShadowAttached, true);
       document.removeEventListener('input', onInputEvent, true);
       document.removeEventListener('change', onInputEvent, true);
       if (pollTimer) window.clearInterval(pollTimer);
@@ -394,7 +402,7 @@
     };
   }
 
-  const api = { createMasker, SHADOW_EVENT };
+  const api = { createMasker };
   root.FabricMask = Object.assign(root.FabricMask || {}, api);
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 

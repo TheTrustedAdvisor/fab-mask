@@ -44,7 +44,7 @@ Details, Updates und Fehlerbehebung: [docs/installation.md](docs/installation.md
 | E-Mail-Adressen / UPNs | an | Besitzer, Zugriffslisten, Gastkonten (`…#EXT#@…`) |
 | Endpunkte & Connection Strings | an | SQL-Endpunkte (`*.datawarehouse.fabric.microsoft.com`), OneLake-/`abfss://`-Pfade, XMLA (`powerbi://…`), KQL-URIs, Datenquellen wie `Extension{"extensionDataSourcePath":"https://org.crm4.dynamics.com"}`, SharePoint, Databricks, Snowflake … |
 | Schlüssel & Tokens | an | `AccountKey=`, SAS-`sig=`, `Password=`, JWTs, Storage-Keys |
-| Angemeldeter Benutzer | an | Avatar, Name/E-Mail/Tenant im Kontomenü, Spalte „Owner“, Owner im OneLake-Katalog, Workspace-Bild |
+| Angemeldeter Benutzer | an | Avatar, Name/E-Mail/Tenant im Kontomenü, Spalte „Owner“, Owner im OneLake-Katalog, Admins in Domänen, Workspace-Bild |
 | Workspace-Namen | aus | Workspace-Titel, Navigation, Workspace-Liste, „Location“ im OneLake-Katalog |
 | IP-Adressen | aus | IPv4 (Gateways, Firewall-Regeln) |
 | Eigene Begriffe | – | Kunden-, Tenant-, Projekt- oder Personennamen (ganze Wörter) |
@@ -122,7 +122,6 @@ src/
   shared/styles.js          CSS-Generierung, Selektoren für Benutzer/Workspaces
   content/masker.js         Content Script: MutationObserver, Inputs, Shadow DOM, Titel
   content/picker.js         Element-Picker + Selektor-Generierung
-  content/shadow-hook.js    Main-World-Hook für spät angehängte Shadow Roots
   background/service-worker.js   Tastenkürzel, Badge, Picker-Koordination
   popup/, options/          Oberfläche
 ```

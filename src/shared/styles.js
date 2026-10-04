@@ -29,6 +29,8 @@
     '.col.col-owner:not([role="columnheader"], .column-header)',
     // Owner in the OneLake catalog item details
     'owner-details .property-value',
+    // Admins / members lists (admin portal → Domains)
+    'tri-members-list .members-names-list',
     // Microsoft account manager (MeControl) and Fluent personas used in older / embedded views
     '#mectrl_currentAccount_primary',
     '#mectrl_currentAccount_secondary',
@@ -122,6 +124,16 @@
     return svg;
   }
 
+  /** Selectors that mask by CSS alone (no detection), as one :is() list – or null if none. */
+  function staticSelectorList(settings) {
+    if (!settings || !settings.enabled) return null;
+    const list = [];
+    if (settings.categories && settings.categories.userProfile) list.push(...USER_PROFILE_SELECTORS);
+    if (settings.categories && settings.categories.workspaceNames) list.push(...WORKSPACE_NAME_SELECTORS);
+    for (const s of settings.customSelectors || []) if (isSafeSelector(s)) list.push(s);
+    return list.length ? `:is(${list.join(',')})` : null;
+  }
+
   /** Returns the full stylesheet text for the given (normalized) settings. */
   function buildCss(settings) {
     const parts = [
@@ -173,7 +185,7 @@
     return quote === null && stack.length === 0;
   }
 
-  const api = { MASK_ATTR, PICKER_ATTR, PIXELATE_FILTER_ID, pixelSize, renderPixelateSvg, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
+  const api = { MASK_ATTR, PICKER_ATTR, PIXELATE_FILTER_ID, pixelSize, renderPixelateSvg, staticSelectorList, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
 
   root.FabricMask = Object.assign(root.FabricMask || {}, api);
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

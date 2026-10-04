@@ -16,6 +16,11 @@ test('manifest is MV3 with minimal permissions and matching version', () => {
   assert.equal(manifest.version, pkg.version);
 });
 
+test('no content script runs in the page main world', () => {
+  // A MAIN-world attachShadow hook interfered with zone.js/Angular and froze the Fabric portal.
+  for (const cs of manifest.content_scripts) assert.notEqual(cs.world, 'MAIN');
+});
+
 test('all referenced files exist', () => {
   const files = [
     ...Object.values(manifest.icons),

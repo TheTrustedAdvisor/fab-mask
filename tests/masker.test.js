@@ -173,32 +173,36 @@ test('adjacent text nodes are tested joined', () => {
   return tick().then(() => assert.ok(isMasked(el)));
 });
 
-test('late shadow roots are picked up via the main-world hook event', async () => {
-  const { document, window } = setup();
-  const host = document.createElement('x-late');
+test('shadow roots without sensitive content get no stylesheet (lazy styling)', async () => {
+  const { document } = setup();
+  const host = document.createElement('fabric-tooltip');
+  const root = host.attachShadow({ mode: 'open' });
+  root.innerHTML = '<slot></slot>';
   document.body.appendChild(host);
   await tick();
-  const root = host.attachShadow({ mode: 'open' });
-  root.innerHTML = `<span id="s">${GUID}</span>`;
-  host.dispatchEvent(new window.Event('fab-mask-shadow-attached', { bubbles: true, composed: true }));
+  assert.equal(root.querySelector('style[data-fabric-mask-style]'), null);
+  assert.equal(root.getElementById('fab-mask-pixelate'), null);
+  // sensitive content arrives later -> stylesheet + filter are added on demand
+  const b = document.createElement('b');
+  b.textContent = 'jane@contoso.com';
+  root.appendChild(b);
+  await tick();
+  assert.ok(isMasked(b));
   assert.ok(root.querySelector('style[data-fabric-mask-style]'));
-  assert.ok(isMasked(root.getElementById('s')));
+  assert.ok(root.getElementById('fab-mask-pixelate'));
 });
 
-test('late shadow roots nested inside another shadow root are found', async () => {
-  const { document, window } = setup();
-  const outer = document.createElement('x-outer');
-  const outerRoot = outer.attachShadow({ mode: 'open' });
-  document.body.appendChild(outer);
+test('shadow roots containing selector-masked elements are styled', async () => {
+  const { document } = setup();
+  const host = document.createElement('x-card');
+  const root = host.attachShadow({ mode: 'open' });
+  root.innerHTML = '<span class="user-email">x</span>';
+  document.body.appendChild(host);
   await tick();
-  const inner = document.createElement('x-inner');
-  outerRoot.appendChild(inner);
+  assert.equal(root.querySelector('style[data-fabric-mask-style]'), null, 'no selector matches yet');
+  root.innerHTML = '<user-details><span class="user-email">x</span></user-details>';
   await tick();
-  const innerRoot = inner.attachShadow({ mode: 'open' });
-  innerRoot.innerHTML = '<span id="s">jane@contoso.com</span>';
-  inner.dispatchEvent(new window.Event('fab-mask-shadow-attached', { bubbles: true, composed: true }));
-  assert.ok(innerRoot.querySelector('style[data-fabric-mask-style]'));
-  assert.ok(isMasked(innerRoot.getElementById('s')));
+  assert.ok(root.querySelector('style[data-fabric-mask-style]'), 'profile selector now matches inside the root');
 });
 
 test('stylesheet is restored when its parent is replaced', async () => {

@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Fab Mask",
   "description": "__MSG_extDescription__",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage_url": "https://github.com/TheTrustedAdvisor/fab-mask",
   "default_locale": "en",
   "minimum_chrome_version": "111",
@@ -40,30 +40,6 @@
     }
   },
   "content_scripts": [
-    {
-      "matches": [
-        "https://*.fabric.microsoft.com/*",
-        "https://*.powerbi.com/*",
-        "https://*.powerbigov.us/*",
-        "https://*.powerbi.cn/*",
-        "https://*.pbidedicated.windows.net/*",
-        "https://*.analysis.windows.net/*"
-      ],
-      "exclude_matches": [
-        "https://blog.fabric.microsoft.com/*",
-        "https://community.fabric.microsoft.com/*",
-        "https://community.powerbi.com/*",
-        "https://powerbi.microsoft.com/*"
-      ],
-      "run_at": "document_start",
-      "all_frames": true,
-      "match_about_blank": true,
-      "match_origin_as_fallback": true,
-      "js": [
-        "content/shadow-hook.js"
-      ],
-      "world": "MAIN"
-    },
     {
       "matches": [
         "https://*.fabric.microsoft.com/*",

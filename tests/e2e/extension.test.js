@@ -56,9 +56,12 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
   assert.equal(await filterOf(page, '.row .col-owner'), PIXEL);
   assert.equal(await filterOf(page, '.userInfoCircle'), PIXEL);
   assert.equal(await filterOf(page, '#hdr-owner'), 'none'); // column headers stay readable
+  assert.equal(await filterOf(page, '.members-names-list'), PIXEL); // domain admins
   assert.equal(await filterOf(page, '#plain'), 'none');
   assert.equal(await filterOf(page, 'h1.workspace-name'), 'none'); // workspace names are opt-in
   assert.equal(await page.title(), 'lh_gold - Fabric');
+  // The page's own APIs stay untouched (a patched attachShadow froze the Angular portal).
+  assert.equal(await page.evaluate(() => /\[native code\]/.test(Function.prototype.toString.call(Element.prototype.attachShadow))), true);
 
   // Cross-origin notebook iframe (pbides.powerbi.com)
   await nb.locator('#path[data-fabric-mask]').waitFor();
