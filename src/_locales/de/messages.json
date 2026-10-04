@@ -1,0 +1,150 @@
+{
+  "extName": {
+    "message": "Fab Mask"
+  },
+  "extDescription": {
+    "message": "Versteckt sensible Informationen (IDs, E-Mail-Adressen, Endpunkte, Secrets, Namen) im Microsoft Fabric- und Power BI-Portal für Demos und Bildschirmfreigaben."
+  },
+  "commandToggle": {
+    "message": "Maskierung ein-/ausschalten"
+  },
+  "statusOn": {
+    "message": "Maskierung ein"
+  },
+  "statusOff": {
+    "message": "Maskierung aus"
+  },
+  "popupMasking": {
+    "message": "Maskierung"
+  },
+  "popupActiveHere": {
+    "message": "Auf dieser Seite aktiv"
+  },
+  "popupNotFabric": {
+    "message": "Keine Fabric- / Power BI-Seite. Nach Installation oder Update der Erweiterung offene Fabric-Tabs neu laden."
+  },
+  "sectionDetect": {
+    "message": "Erkennen"
+  },
+  "catGuid": {
+    "message": "IDs (GUIDs)"
+  },
+  "catGuidHint": {
+    "message": "Workspace-, Item-, Tenant- und Capacity-IDs"
+  },
+  "catEmail": {
+    "message": "E-Mail-Adressen / UPNs"
+  },
+  "catEmailHint": {
+    "message": "Besitzer, Zugriffslisten, „Geändert von“"
+  },
+  "catEndpoint": {
+    "message": "Endpunkte & Connection Strings"
+  },
+  "catEndpointHint": {
+    "message": "SQL-Endpunkte, OneLake-Pfade, XMLA, KQL-URIs"
+  },
+  "catSecret": {
+    "message": "Schlüssel & Tokens"
+  },
+  "catSecretHint": {
+    "message": "Account Keys, SAS-Signaturen, Passwörter, JWTs"
+  },
+  "catIpAddress": {
+    "message": "IP-Adressen"
+  },
+  "catIpAddressHint": {
+    "message": "IPv4-Adressen (Gateways, Firewall-Regeln)"
+  },
+  "catUserProfile": {
+    "message": "Angemeldeter Benutzer"
+  },
+  "catUserProfileHint": {
+    "message": "Kontomenü, Avatare, Besitzernamen, Workspace-Bilder"
+  },
+  "sectionAppearance": {
+    "message": "Darstellung"
+  },
+  "modeBlur": {
+    "message": "Unscharf"
+  },
+  "modeRedact": {
+    "message": "Schwärzen"
+  },
+  "blurStrength": {
+    "message": "Unschärfe"
+  },
+  "revealOnHover": {
+    "message": "Bei Mouseover anzeigen"
+  },
+  "maskTitle": {
+    "message": "Tab-Titel maskieren"
+  },
+  "pickElement": {
+    "message": "Element zum Maskieren auswählen"
+  },
+  "pickElementHint": {
+    "message": "Klicke auf ein Element der Seite. Esc bricht ab."
+  },
+  "moreSettings": {
+    "message": "Eigene Begriffe & Selektoren…"
+  },
+  "shortcutHint": {
+    "message": "Tastenkürzel: $KEY$",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "optionsTitle": {
+    "message": "Fab Mask – Einstellungen"
+  },
+  "customTerms": {
+    "message": "Eigene Begriffe"
+  },
+  "customTermsHint": {
+    "message": "Einer pro Zeile, Groß-/Kleinschreibung egal. Für Kunden-, Tenant-, Workspace- oder Personennamen. Elemente, die einen dieser Begriffe enthalten, werden maskiert."
+  },
+  "customSelectors": {
+    "message": "Eigene CSS-Selektoren"
+  },
+  "customSelectorsHint": {
+    "message": "Einer pro Zeile. Passende Elemente werden immer maskiert. Mit der Elementauswahl im Popup kannst du Selektoren direkt auf der Seite hinzufügen."
+  },
+  "invalidSelectors": {
+    "message": "Ungültige Selektoren ignoriert: $LIST$",
+    "placeholders": {
+      "list": {
+        "content": "$1"
+      }
+    }
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "saved": {
+    "message": "Gespeichert"
+  },
+  "resetDefaults": {
+    "message": "Auf Standard zurücksetzen"
+  },
+  "resetConfirm": {
+    "message": "Alle Einstellungen, eigenen Begriffe und Selektoren zurücksetzen?"
+  },
+  "limitationsTitle": {
+    "message": "Einschränkungen"
+  },
+  "limitationsText": {
+    "message": "Die Adressleiste (enthält Workspace- und Item-IDs), native Tooltips und auf ein Canvas gezeichnete Inhalte (z. B. Report-Visuals) kann eine Erweiterung nicht maskieren. Notebooks, Lakehouse-Explorer und Pipelines laufen in eigenen Frames und werden ebenfalls abgedeckt. Prüfe immer vor einer Bildschirmfreigabe."
+  },
+  "catWorkspaceNames": {
+    "message": "Workspace-Namen"
+  },
+  "catWorkspaceNamesHint": {
+    "message": "Kopfzeile, Navigation, Workspace-Liste, Katalog-Speicherort"
+  },
+  "saveFailed": {
+    "message": "Speichern fehlgeschlagen."
+  }
+}

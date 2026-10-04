@@ -1,0 +1,38 @@
+body { width: 320px; }
+.header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-bottom: 1px solid var(--fm-border);
+}
+.header-text { flex: 1; min-width: 0; }
+.header h1 { font-size: 15px; }
+.header p { margin: 0; }
+main { padding: 4px 14px 8px; }
+main.disabled section:not(.always) { opacity: .5; }
+section { padding: 10px 0; border-bottom: 1px solid var(--fm-border); }
+section:last-child { border-bottom: 0; }
+h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--fm-muted); margin-bottom: 8px; }
+.categories { display: grid; gap: 6px; }
+.check { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+.check input { margin: 2px 0 0; accent-color: var(--fm-accent); flex: none; }
+.check span { display: flex; flex-direction: column; }
+.check b { font-weight: 600; }
+.check small { color: var(--fm-muted); font-size: 11.5px; }
+.segmented {
+  display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--fm-border);
+  border-radius: 4px; overflow: hidden; margin-bottom: 8px;
+}
+.segmented label { position: relative; text-align: center; cursor: pointer; }
+.segmented input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.segmented span { display: block; padding: 5px 0; font-weight: 600; }
+.segmented input:checked + span { background: var(--fm-accent); color: var(--fm-on-accent); }
+.segmented input:focus-visible + span { outline: 2px solid var(--fm-accent); outline-offset: -2px; }
+.row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.row > span:first-child { flex: 1; }
+.row input[type="range"] { flex: 1; accent-color: var(--fm-accent); }
+.row output { width: 34px; text-align: right; font-variant-numeric: tabular-nums; color: var(--fm-muted); }
+.actions .btn { width: 100%; }
+.actions p { margin: 6px 0 0; text-align: center; }
+.footer {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  padding: 10px 14px; border-top: 1px solid var(--fm-border); background: var(--fm-surface);
+}

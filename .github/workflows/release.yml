@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Check tag matches version
+        run: |
+          VERSION=$(node -p "require('./src/manifest.json').version")
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match manifest version $VERSION"; exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - run: npm run lint
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+
+      - name: Build signed packages
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        run: |
+          if [ -z "$CRX_PRIVATE_KEY" ]; then echo "Secret CRX_PRIVATE_KEY is missing"; exit 1; fi
+          node scripts/package.mjs
+
+      - name: Release notes from CHANGELOG
+        run: |
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" {found=1; next}
+            found && /^## \[/ {exit}
+            found && /^\[.*\]: / {next}
+            found {print}
+          ' CHANGELOG.md > notes.md
+          ID=$(cat dist/extension-id.txt)
+          cat >> notes.md <<NOTES
+
+          ---
+          **Install:** download \`fab-mask-$VERSION.zip\`, unzip, then *Load unpacked* in \`chrome://extensions\` / \`edge://extensions\` (developer mode) – see [docs/installation.md](https://github.com/$GITHUB_REPOSITORY/blob/main/docs/installation.md).
+
+          **Managed devices (Chrome & Edge policy \`ExtensionInstallForcelist\`):**
+          \`$ID;https://github.com/$GITHUB_REPOSITORY/releases/latest/download/updates.xml\`
+          NOTES
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "Fab Mask $VERSION" \
+            --notes-file notes.md \
+            "dist/fab-mask-$VERSION.zip" \
+            "dist/fab-mask-$VERSION.crx" \
+            dist/updates.xml

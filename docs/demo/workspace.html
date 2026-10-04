@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>lh_sales_gold – Contoso Finance Prod</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.4 "Segoe UI", system-ui, sans-serif; color: #242424; background: #faf9f8; }
+  header.top { height: 48px; display: flex; align-items: center; gap: 16px; padding: 0 16px; background: #fff; border-bottom: 1px solid #e1dfdd; }
+  .brand { font-weight: 600; color: #117865; }
+  .search { flex: 1; max-width: 420px; height: 30px; border: 1px solid #c8c6c4; border-radius: 4px; padding: 6px 10px; color: #8a8886; }
+  .spacer { flex: 1; }
+  trident-user-info-button .userInfoCircle { width: 30px; height: 30px; border-radius: 50%; background: #0f6cbd; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 12px; }
+  .layout { display: flex; height: calc(100vh - 48px); }
+  nav { width: 72px; background: #fff; border-right: 1px solid #e1dfdd; padding-top: 12px; display: flex; flex-direction: column; gap: 14px; align-items: center; font-size: 10px; color: #605e5c; }
+  nav .ico { width: 24px; height: 24px; border-radius: 6px; background: #e1dfdd; margin: 0 auto 2px; }
+  nav button.workspaceName { all: unset; text-align: center; width: 64px; }
+  main { flex: 1; padding: 20px 28px; overflow: hidden; }
+  h1.workspace-name { margin: 0 0 4px; font-size: 22px; font-weight: 600; }
+  .desc { color: #605e5c; margin-bottom: 18px; }
+  .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+  .card { background: #fff; border: 1px solid #e1dfdd; border-radius: 8px; padding: 14px 16px; }
+  .card h2 { margin: 0 0 10px; font-size: 14px; }
+  .row { display: grid; grid-template-columns: 1.3fr .9fr 1.1fr 1fr; gap: 8px; padding: 9px 4px; border-top: 1px solid #f3f2f1; align-items: center; }
+  .row.head { border-top: 0; color: #605e5c; font-size: 12px; font-weight: 600; }
+  .prop { margin-bottom: 12px; }
+  .prop .k { color: #605e5c; font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .copy { font-family: Consolas, ui-monospace, monospace; font-size: 12.5px; background: #f3f2f1; border-radius: 4px; padding: 6px 8px; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .code { background: #fff; border: 1px solid #e1dfdd; border-radius: 8px; margin-top: 20px; font-family: Consolas, ui-monospace, monospace; font-size: 13px; }
+  .code .view-line { padding: 3px 14px; white-space: pre; }
+  .code .k1 { color: #0451a5; } .code .s1 { color: #a31515; }
+  .label { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 3px; background: #dff6dd; color: #107c10; }
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="brand">Workspace demo</span>
+  <div class="search">Search</div>
+  <span class="spacer"></span>
+  <trident-user-info-button><div class="userInfoCircle">JD</div></trident-user-info-button>
+</header>
+<div class="layout">
+  <nav>
+    <div><div class="ico"></div>Home</div>
+    <div><div class="ico"></div>Workspaces</div>
+    <div><div class="ico"></div>OneLake</div>
+    <button class="workspaceName"><div class="ico"></div><span class="navbar-item-label">Contoso Finance Prod</span></button>
+  </nav>
+  <main>
+    <h1 data-testid="workspace-name-header" class="workspace-name">Contoso Finance Prod</h1>
+    <div class="desc">Workspace ID: 4e864cf8-386d-4067-bfa7-4ef5e408c474 · Capacity F64 (West Europe)</div>
+    <div class="grid">
+      <section class="card">
+        <h2>Items</h2>
+        <div class="row head"><span>Name</span><span>Type</span><span>Owner</span><span>Refreshed</span></div>
+        <div class="row"><span>lh_sales_gold</span><span>Lakehouse</span><span class="col col-owner">Jane Doe</span><span>10/2/26, 2:39 PM</span></div>
+        <div class="row"><span>nb_bronze_to_silver</span><span>Notebook</span><span class="col col-owner">John Smith</span><span>10/2/26, 1:12 PM</span></div>
+        <div class="row"><span>Revenue overview</span><span>Report</span><span class="col col-owner">Jane Doe</span><span>10/1/26, 9:03 AM</span></div>
+        <div class="row"><span>Sales model</span><span>Semantic model</span><span class="col col-owner">Ana Lopez</span><span>10/1/26, 8:55 AM</span></div>
+      </section>
+      <section class="card">
+        <h2>lh_sales_gold <span class="label">Certified</span></h2>
+        <div class="prop"><div class="k">SQL connection string</div><span class="copy" data-testid="copy-content">x6eps4xrq2xudenlfv6naeo3i4-cqzkbnfqttvuhd4mnmxgd5gl3i.datawarehouse.fabric.microsoft.com</span></div>
+        <div class="prop"><div class="k">OneLake path</div><span class="copy">abfss://4e864cf8-386d-4067-bfa7-4ef5e408c474@onelake.dfs.fabric.microsoft.com/9a1f0c2e-77b4-4c39-8a51-2d9b1e0f6a33</span></div>
+        <div class="prop"><div class="k">Contact</div><span>jane.doe@contoso.com</span></div>
+        <div class="prop"><div class="k">Data source</div><span>Extension{"extensionDataSourceKind":"Cds","extensionDataSourcePath":"https://contoso.crm4.dynamics.com/"}</span></div>
+      </section>
+    </div>
+    <div class="code">
+      <div class="view-line"><span class="k1">df</span> = spark.read.format(<span class="s1">"delta"</span>).load(</div>
+      <div class="view-line">    <span class="s1">"abfss://Sales@onelake.dfs.fabric.microsoft.com/lh_sales_gold.Lakehouse/Tables/orders"</span>)</div>
+      <div class="view-line"><span class="k1">token</span> = <span class="s1">"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzIn0.c2lnbmF0dXJlLXNpZ25hdHVyZQ"</span></div>
+      <div class="view-line">display(df.groupBy(<span class="s1">"region"</span>).sum(<span class="s1">"amount"</span>))</div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

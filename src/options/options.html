@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fab Mask</title>
+  <link rel="stylesheet" href="../shared/ui.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="header">
+      <img src="../icons/icon48.png" width="40" height="40" alt="">
+      <h1 data-i18n="optionsTitle"></h1>
+    </header>
+
+    <form id="form">
+      <section class="card">
+        <h2><label for="customTerms" data-i18n="customTerms"></label></h2>
+        <p class="muted" data-i18n="customTermsHint"></p>
+        <textarea id="customTerms" rows="8" spellcheck="false" placeholder="Contoso&#10;Jane Doe&#10;Finance-Prod"></textarea>
+      </section>
+
+      <section class="card">
+        <h2><label for="customSelectors" data-i18n="customSelectors"></label></h2>
+        <p class="muted" data-i18n="customSelectorsHint"></p>
+        <textarea id="customSelectors" rows="8" spellcheck="false" class="mono" placeholder=".workspace-name&#10;[data-testid=&quot;owner-cell&quot;]"></textarea>
+        <p id="selector-errors" class="error" role="alert" hidden></p>
+      </section>
+
+      <div class="buttons">
+        <button type="submit" class="btn primary" data-i18n="save"></button>
+        <span id="status" class="muted" role="status"></span>
+        <span class="spacer"></span>
+        <button type="button" id="reset" class="btn" data-i18n="resetDefaults"></button>
+      </div>
+    </form>
+
+    <section class="card note">
+      <h2 data-i18n="limitationsTitle"></h2>
+      <p class="muted" data-i18n="limitationsText"></p>
+    </section>
+  </main>
+
+  <script src="../shared/settings.js"></script>
+  <script src="../shared/styles.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "short_name": "Fab Mask",
+  "description": "__MSG_extDescription__",
+  "version": "1.0.0",
+  "homepage_url": "https://github.com/TheTrustedAdvisor/fab-mask",
+  "default_locale": "en",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "__MSG_extName__",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "commands": {
+    "toggle-masking": {
+      "suggested_key": {
+        "default": "Alt+Shift+M"
+      },
+      "description": "__MSG_commandToggle__"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.fabric.microsoft.com/*",
+        "https://*.powerbi.com/*",
+        "https://*.powerbigov.us/*",
+        "https://*.powerbi.cn/*",
+        "https://*.pbidedicated.windows.net/*",
+        "https://*.analysis.windows.net/*"
+      ],
+      "exclude_matches": [
+        "https://blog.fabric.microsoft.com/*",
+        "https://community.fabric.microsoft.com/*",
+        "https://community.powerbi.com/*",
+        "https://powerbi.microsoft.com/*"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "js": [
+        "content/shadow-hook.js"
+      ],
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://*.fabric.microsoft.com/*",
+        "https://*.powerbi.com/*",
+        "https://*.powerbigov.us/*",
+        "https://*.powerbi.cn/*",
+        "https://*.pbidedicated.windows.net/*",
+        "https://*.analysis.windows.net/*"
+      ],
+      "exclude_matches": [
+        "https://blog.fabric.microsoft.com/*",
+        "https://community.fabric.microsoft.com/*",
+        "https://community.powerbi.com/*",
+        "https://powerbi.microsoft.com/*"
+      ],
+      "js": [
+        "shared/settings.js",
+        "shared/detector.js",
+        "shared/styles.js",
+        "content/picker.js",
+        "content/masker.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true
+    }
+  ]
+}

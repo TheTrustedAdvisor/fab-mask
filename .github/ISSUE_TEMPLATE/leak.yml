@@ -1,0 +1,28 @@
+name: Something is not masked
+description: Sensitive information is still visible in the portal
+labels: [detection]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Do not post real tenant data.** Replace names, IDs and e-mails in screenshots and HTML
+        snippets with fake values (e.g. `contoso`, `00000000-0000-0000-0000-000000000000`).
+  - type: input
+    id: where
+    attributes:
+      label: Where in the portal?
+      placeholder: e.g. Lakehouse → SQL analytics endpoint → Settings
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is visible?
+      description: Kind of information (ID, e-mail, name, endpoint …) and, if possible, the element's HTML with fake values (right-click → Inspect → Copy outerHTML).
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Fab Mask version and browser
+      placeholder: Fab Mask 1.0.0, Edge 141

@@ -1,0 +1,150 @@
+{
+  "extName": {
+    "message": "Fab Mask"
+  },
+  "extDescription": {
+    "message": "Hides sensitive information (IDs, e-mail addresses, endpoints, secrets, names) in the Microsoft Fabric and Power BI portal for demos and screen sharing."
+  },
+  "commandToggle": {
+    "message": "Toggle masking on/off"
+  },
+  "statusOn": {
+    "message": "masking on"
+  },
+  "statusOff": {
+    "message": "masking off"
+  },
+  "popupMasking": {
+    "message": "Masking"
+  },
+  "popupActiveHere": {
+    "message": "Active on this page"
+  },
+  "popupNotFabric": {
+    "message": "Not a Fabric / Power BI page. After installing or updating the extension, reload open Fabric tabs."
+  },
+  "sectionDetect": {
+    "message": "Detect"
+  },
+  "catGuid": {
+    "message": "IDs (GUIDs)"
+  },
+  "catGuidHint": {
+    "message": "Workspace, item, tenant and capacity IDs"
+  },
+  "catEmail": {
+    "message": "E-mail addresses / UPNs"
+  },
+  "catEmailHint": {
+    "message": "Owners, access lists, \"modified by\""
+  },
+  "catEndpoint": {
+    "message": "Endpoints & connection strings"
+  },
+  "catEndpointHint": {
+    "message": "SQL endpoints, OneLake paths, XMLA, KQL URIs"
+  },
+  "catSecret": {
+    "message": "Keys & tokens"
+  },
+  "catSecretHint": {
+    "message": "Account keys, SAS signatures, passwords, JWTs"
+  },
+  "catIpAddress": {
+    "message": "IP addresses"
+  },
+  "catIpAddressHint": {
+    "message": "IPv4 addresses (gateways, firewall rules)"
+  },
+  "catUserProfile": {
+    "message": "Signed-in user"
+  },
+  "catUserProfileHint": {
+    "message": "Account menu, avatars, owner names, workspace images"
+  },
+  "sectionAppearance": {
+    "message": "Appearance"
+  },
+  "modeBlur": {
+    "message": "Blur"
+  },
+  "modeRedact": {
+    "message": "Redact"
+  },
+  "blurStrength": {
+    "message": "Blur strength"
+  },
+  "revealOnHover": {
+    "message": "Reveal on hover"
+  },
+  "maskTitle": {
+    "message": "Mask tab title"
+  },
+  "pickElement": {
+    "message": "Pick element to mask"
+  },
+  "pickElementHint": {
+    "message": "Click any element on the page. Esc cancels."
+  },
+  "moreSettings": {
+    "message": "Custom terms & selectors…"
+  },
+  "shortcutHint": {
+    "message": "Shortcut: $KEY$",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "optionsTitle": {
+    "message": "Fab Mask – Settings"
+  },
+  "customTerms": {
+    "message": "Custom terms"
+  },
+  "customTermsHint": {
+    "message": "One per line, case-insensitive. Use for customer, tenant, workspace or person names. Elements containing one of these terms are masked."
+  },
+  "customSelectors": {
+    "message": "Custom CSS selectors"
+  },
+  "customSelectorsHint": {
+    "message": "One per line. Matching elements are always masked. Use the element picker in the popup to add selectors from the page."
+  },
+  "invalidSelectors": {
+    "message": "Ignored invalid selectors: $LIST$",
+    "placeholders": {
+      "list": {
+        "content": "$1"
+      }
+    }
+  },
+  "save": {
+    "message": "Save"
+  },
+  "saved": {
+    "message": "Saved"
+  },
+  "resetDefaults": {
+    "message": "Reset to defaults"
+  },
+  "resetConfirm": {
+    "message": "Reset all settings, custom terms and selectors?"
+  },
+  "limitationsTitle": {
+    "message": "Limitations"
+  },
+  "limitationsText": {
+    "message": "The address bar (which contains workspace and item IDs), native tooltips and content drawn on a canvas (e.g. report visuals) cannot be masked by an extension. Notebooks, the lakehouse explorer and pipelines run in their own frames and are covered as well. Always double-check before sharing your screen."
+  },
+  "catWorkspaceNames": {
+    "message": "Workspace names"
+  },
+  "catWorkspaceNamesHint": {
+    "message": "Header, navigation, workspace list, catalog location"
+  },
+  "saveFailed": {
+    "message": "Saving failed."
+  }
+}
