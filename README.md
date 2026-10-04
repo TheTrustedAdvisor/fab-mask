@@ -59,7 +59,8 @@ Ausgabetabellen), der **Lakehouse-Explorer** (`pbilhe.powerbi.com`), **Pipelines
 <img src="docs/images/popup-light.png" alt="Popup" width="260" align="right">
 
 - **Ein/Aus** per Popup oder **Alt+Shift+M** (Badge zeigt „OFF“)
-- Modus **Unscharf** (Stärke einstellbar) oder **Schwärzen**; optional „Bei Mouseover anzeigen“
+- Modus **Pixel** (Mosaik, Standard), **Unscharf** oder **Schwärzen**; Stärke einstellbar;
+  optional „Bei Mouseover anzeigen“
 - **Tab-Titel** wird ebenfalls bereinigt
 - **Element auswählen**: im Popup klicken, dann auf ein Element der Seite – es bleibt künftig maskiert
 - **Eigene Begriffe & Selektoren** auf der Optionsseite
@@ -88,6 +89,10 @@ Siehe [PRIVACY.md](PRIVACY.md).
   nach Seitenstart, lange bevor das Portal Inhalte rendert).
 - Das Portal-Markup ändert sich laufend. Rutscht etwas durch: Element-Picker verwenden und gern
   ein [Issue](https://github.com/TheTrustedAdvisor/fab-mask/issues) eröffnen – **ohne** echte Daten im Screenshot.
+
+- Pixel- und Unscharf-Modus verbergen Inhalte zuverlässig für Zuschauer einer Bildschirmfreigabe.
+  Für veröffentlichte Screenshots mit besonders kritischen Werten ist **Schwärzen** die sicherste Wahl,
+  da Mosaike bei bekannter Schrift theoretisch rekonstruiert werden können.
 
 **Vor jeder Bildschirmfreigabe selbst prüfen.** Die Erweiterung ist eine Hilfe, keine Garantie.
 

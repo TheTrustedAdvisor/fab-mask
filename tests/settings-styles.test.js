@@ -14,7 +14,7 @@ test('normalizeSettings fills defaults and rejects garbage', () => {
     customSelectors: '.x'
   });
   assert.equal(s.enabled, true);
-  assert.equal(s.mode, 'blur');
+  assert.equal(s.mode, 'pixelate'); // unknown mode falls back to the default
   assert.equal(s.blurPx, 20);
   assert.equal(s.categories.guid, false);
   assert.equal(s.categories.email, true);
@@ -22,6 +22,8 @@ test('normalizeSettings fills defaults and rejects garbage', () => {
   assert.deepEqual(s.customSelectors, []);
   assert.equal(normalizeSettings({ blurPx: -3 }).blurPx, 2);
   assert.equal(normalizeSettings({ mode: 'redact' }).mode, 'redact');
+  assert.equal(normalizeSettings({ mode: 'blur' }).mode, 'blur');
+  assert.equal(normalizeSettings({}).mode, 'pixelate');
 });
 
 test('buildCss: disabled → only picker rule', () => {
@@ -31,7 +33,7 @@ test('buildCss: disabled → only picker rule', () => {
 });
 
 test('buildCss: blur, redact, reveal on hover, profile selectors, custom selectors', () => {
-  const blur = buildCss(normalizeSettings({ blurPx: 5, customSelectors: ['.a, .b'] }));
+  const blur = buildCss(normalizeSettings({ mode: 'blur', blurPx: 5, customSelectors: ['.a, .b'] }));
   assert.match(blur, /:is\(\[data-fabric-mask\]\)\{filter:blur\(5px\)!important;\}/);
   assert.match(blur, /:is\(\.a, \.b\)\{filter:blur/);
   assert.match(blur, /user-details \.user-email/);
@@ -42,6 +44,16 @@ test('buildCss: blur, redact, reveal on hover, profile selectors, custom selecto
 
   const noProfile = buildCss(normalizeSettings({ categories: { userProfile: false } }));
   assert.ok(!noProfile.includes('user-details'));
+});
+
+test('pixelate mode references the mosaic filter; block size has a floor', () => {
+  const { pixelSize, PIXELATE_FILTER_ID } = require('../src/shared/styles.js');
+  const css = buildCss(normalizeSettings({}));
+  assert.match(css, new RegExp(`\\[data-fabric-mask\\]\\)\\{filter:url\\("#${PIXELATE_FILTER_ID}"\\)!important;\\}`));
+  assert.match(css, /\{filter:none!important;\}/, 'nested masks are not filtered twice');
+  assert.ok(!buildCss(normalizeSettings({ mode: 'redact' })).includes('filter:none'));
+  assert.equal(pixelSize(normalizeSettings({ blurPx: 2 })), 6);
+  assert.equal(pixelSize(normalizeSettings({ blurPx: 12 })), 12);
 });
 
 test('isSafeSelector blocks rule injection and unbalanced input', () => {

@@ -19,9 +19,13 @@
     for (const radio of document.querySelectorAll('input[name="mode"]')) {
       radio.checked = radio.value === settings.mode;
     }
-    $('blur-row').hidden = settings.mode !== 'blur';
-    $('blurPx').value = String(settings.blurPx);
-    $('blurPx-value').textContent = `${settings.blurPx}px`;
+    // One "strength" slider: blur radius, or mosaic block size (minimum MIN_PIXEL).
+    $('blur-row').hidden = settings.mode === 'redact';
+    const min = settings.mode === 'pixelate' ? FM.MIN_PIXEL : FM.MIN_BLUR;
+    const value = Math.max(min, settings.blurPx);
+    $('blurPx').min = String(min);
+    $('blurPx').value = String(value);
+    $('blurPx-value').textContent = `${value}px`;
     $('revealOnHover').checked = settings.revealOnHover;
     $('maskTitle').checked = settings.maskTitle;
   }

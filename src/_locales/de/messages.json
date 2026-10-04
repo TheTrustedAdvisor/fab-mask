@@ -72,7 +72,7 @@
     "message": "Schwärzen"
   },
   "blurStrength": {
-    "message": "Unschärfe"
+    "message": "Stärke"
   },
   "revealOnHover": {
     "message": "Bei Mouseover anzeigen"
@@ -146,5 +146,8 @@
   },
   "saveFailed": {
     "message": "Speichern fehlgeschlagen."
+  },
+  "modePixelate": {
+    "message": "Pixel"
   }
 }

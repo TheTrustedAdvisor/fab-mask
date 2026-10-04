@@ -12,7 +12,7 @@
 
   const DEFAULT_SETTINGS = Object.freeze({
     enabled: true,
-    mode: 'blur', // 'blur' | 'redact'
+    mode: 'pixelate', // 'pixelate' | 'blur' | 'redact'
     blurPx: 8,
     revealOnHover: false,
     maskTitle: true,
@@ -29,8 +29,11 @@
     customSelectors: Object.freeze([])
   });
 
+  const MODES = ['pixelate', 'blur', 'redact'];
   const MIN_BLUR = 2;
   const MAX_BLUR = 20;
+  // Smaller mosaic blocks leave large headings readable.
+  const MIN_PIXEL = 6;
   const MAX_LIST_ENTRIES = 200;
   const MAX_ENTRY_LENGTH = 300;
 
@@ -70,7 +73,7 @@
     const blur = Number(src.blurPx);
     return {
       enabled: typeof src.enabled === 'boolean' ? src.enabled : DEFAULT_SETTINGS.enabled,
-      mode: src.mode === 'redact' ? 'redact' : 'blur',
+      mode: MODES.includes(src.mode) ? src.mode : DEFAULT_SETTINGS.mode,
       blurPx: Number.isFinite(blur)
         ? Math.min(MAX_BLUR, Math.max(MIN_BLUR, Math.round(blur)))
         : DEFAULT_SETTINGS.blurPx,
@@ -130,8 +133,10 @@
     STORAGE_KEY,
     CATEGORY_KEYS,
     DEFAULT_SETTINGS,
+    MODES,
     MIN_BLUR,
     MAX_BLUR,
+    MIN_PIXEL,
     MESSAGES,
     STORAGE_AREA,
     normalizeSettings,

@@ -34,6 +34,7 @@ test.after(async () => {
   if (context) await context.close();
 });
 
+const PIXEL = 'url("#fab-mask-pixelate")';
 const filterOf = (frame, selector) =>
   frame.locator(selector).evaluate((el) => getComputedStyle(el).filter);
 
@@ -50,10 +51,10 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
   const nb = page.frameLocator('#nb');
 
   await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
-  assert.equal(await filterOf(page, '#ws-id'), 'blur(8px)');
-  assert.equal(await filterOf(page, '#endpoint'), 'blur(8px)');
-  assert.equal(await filterOf(page, '.row .col-owner'), 'blur(8px)');
-  assert.equal(await filterOf(page, '.userInfoCircle'), 'blur(8px)');
+  assert.equal(await filterOf(page, '#ws-id'), PIXEL);
+  assert.equal(await filterOf(page, '#endpoint'), PIXEL);
+  assert.equal(await filterOf(page, '.row .col-owner'), PIXEL);
+  assert.equal(await filterOf(page, '.userInfoCircle'), PIXEL);
   assert.equal(await filterOf(page, '#hdr-owner'), 'none'); // column headers stay readable
   assert.equal(await filterOf(page, '#plain'), 'none');
   assert.equal(await filterOf(page, 'h1.workspace-name'), 'none'); // workspace names are opt-in
@@ -61,10 +62,11 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
 
   // Cross-origin notebook iframe (pbides.powerbi.com)
   await nb.locator('#path[data-fabric-mask]').waitFor();
-  assert.equal(await filterOf(nb.locator('body'), '#cell-email'), 'blur(8px)');
+  assert.equal(await filterOf(nb.locator('body'), '#cell-email'), PIXEL);
   assert.equal(await filterOf(nb.locator('body'), '#code'), 'none');
   assert.equal(await filterOf(nb.locator('body'), '#cell-amount'), 'none');
-  assert.equal(await filterOf(nb.locator('body'), '#split-line'), 'blur(8px)'); // Monaco token split
+  assert.equal(await filterOf(nb.locator('body'), '#split-line'), PIXEL); // Monaco token split
+  assert.equal(await filterOf(nb.locator('body'), '#nested'), 'none'); // masked, but inside a masked line
 
   // Dynamically added row
   await page.evaluate(() => {
@@ -78,7 +80,7 @@ test('masks the portal, the notebook iframe and the title; toggles live', async 
   // Opt-in category + custom term, applied live without reload
   await setSettings({ categories: { workspaceNames: true }, customTerms: ['lh_gold'] });
   await page.waitForFunction(() => getComputedStyle(document.querySelector('h1.workspace-name')).filter !== 'none');
-  assert.equal(await filterOf(page, '.row .col-workspace'), 'blur(8px)');
+  assert.equal(await filterOf(page, '.row .col-workspace'), PIXEL);
   assert.equal(await filterOf(page, '#hdr-location'), 'none');
   await page.waitForFunction(() => document.querySelector('.name-text').hasAttribute('data-fabric-mask'));
   await page.waitForFunction(() => document.title === '•••••• - Fabric');
@@ -172,7 +174,7 @@ test('element picker adds a selector for the clicked element and stops in all fr
   await page.waitForFunction(() => document.querySelector('#plain').getAttribute('data-fabric-mask-picker') === 'hover');
   await page.click('#plain');
 
-  await page.waitForFunction(() => getComputedStyle(document.querySelector('#plain')).filter === 'blur(8px)');
+  await page.waitForFunction((v) => getComputedStyle(document.querySelector('#plain')).filter === v, PIXEL);
   const s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
   assert.deepEqual(s.customSelectors, ['#plain']);
   // The notebook frame's picker was stopped via the service worker relay: hovering no longer highlights.

@@ -116,13 +116,13 @@ test('settings changes apply live: disable, categories, custom terms, custom sel
 
   emit({ enabled: false });
   assert.ok(!isMasked(g));
-  assert.ok(!style.textContent.includes('blur('));
+  assert.ok(!style.textContent.includes('filter:'));
 
   emit({ customTerms: ['contoso'], categories: { guid: false } });
   assert.ok(!isMasked(g));
   assert.ok(isMasked(c));
 
-  emit({ customSelectors: ['.ws'] });
+  emit({ customSelectors: ['.ws'], mode: 'blur' });
   assert.match(style.textContent, /:is\(\.ws\)\{filter:blur/);
 });
 
@@ -134,6 +134,22 @@ test('text split across inline elements is detected and re-evaluated', async () 
   d.querySelector('mark').firstChild.data = ' and ';
   await tick();
   assert.ok(!isMasked(d), 'parent re-evaluated when inline child text changes');
+});
+
+test('mosaic filter is injected into document and shadow roots and follows the strength', async () => {
+  const { document, emit } = setup();
+  const filter = () => document.getElementById('fab-mask-pixelate');
+  assert.ok(filter(), 'filter present in document');
+  assert.equal(filter().querySelector('feMorphology').getAttribute('radius'), '4'); // 8px blocks
+  emit({ blurPx: 12 });
+  assert.equal(filter().querySelector('feMorphology').getAttribute('radius'), '6');
+  const host = document.createElement('div');
+  const root = host.attachShadow({ mode: 'open' });
+  root.innerHTML = '<b>jane@contoso.com</b>';
+  document.body.appendChild(host);
+  await tick();
+  assert.ok(root.getElementById('fab-mask-pixelate'), 'filter present in shadow root');
+  assert.ok(!document.querySelector('svg[data-fabric-mask-style] [data-fabric-mask]'), 'filter svg is never scanned');
 });
 
 test('Monaco lines are tested as a whole (tokens split across spans)', async () => {

@@ -44,6 +44,7 @@
     let css = FM.buildCss(settings);
     const roots = new Set(); // Document and ShadowRoots we observe
     const styleEls = new Map(); // root -> <style>
+    const svgEls = new Map(); // root -> hidden <svg> with the mosaic filter
     let pollTimer = null;
     let lastInputValues = new WeakMap(); // input -> last evaluated value
     let pageTitle = null;
@@ -56,23 +57,33 @@
     // ---------------------------------------------------------------- styles
 
     function ensureStyle(rootNode) {
+      const parent = rootNode === document ? document.documentElement : rootNode;
       let el = styleEls.get(rootNode);
-      if (el && el.isConnected) return;
       if (!el) {
         el = document.createElement('style');
         el.setAttribute(STYLE_MARKER, '');
         el.textContent = css;
         styleEls.set(rootNode, el);
       }
-      const parent = rootNode === document ? document.documentElement : rootNode;
-      if (parent) parent.appendChild(el);
+      if (!el.isConnected && parent) parent.appendChild(el);
+      // filter: url(#id) resolves within the element's own tree, so every root gets the filter.
+      let svg = svgEls.get(rootNode);
+      if (!svg) {
+        svg = FM.renderPixelateSvg(document, FM.pixelSize(settings));
+        svg.setAttribute(STYLE_MARKER, '');
+        svgEls.set(rootNode, svg);
+      }
+      if (!svg.isConnected && parent) parent.appendChild(svg);
     }
 
     function applyCss() {
       css = FM.buildCss(settings);
+      const size = FM.pixelSize(settings);
       for (const [rootNode, el] of styleEls) {
         if (el.textContent !== css) el.textContent = css;
-        if (!el.isConnected) ensureStyle(rootNode);
+        const svg = svgEls.get(rootNode);
+        if (svg) FM.renderPixelateSvg(document, size, svg);
+        ensureStyle(rootNode);
       }
     }
 
@@ -146,7 +157,7 @@
         return;
       }
       const walker = document.createTreeWalker(node, 1 /* SHOW_ELEMENT */, {
-        acceptNode: (el) => (SKIP_TAGS.has(el.tagName) ? 2 /* REJECT subtree */ : 1)
+        acceptNode: (el) => (SKIP_TAGS.has(el.tagName) || el.hasAttribute(STYLE_MARKER) ? 2 /* REJECT subtree */ : 1)
       });
       for (let el = walker.nextNode(); el; el = walker.nextNode()) {
         evaluate(el);
@@ -219,7 +230,10 @@
       // Our stylesheet may have been removed directly, or with its parent (re-rendered <html>,
       // document.open() in about:blank frames).
       if (removedSomething) {
-        for (const [rootNode, el] of styleEls) if (!el.isConnected) ensureStyle(rootNode);
+        for (const [rootNode, el] of styleEls) {
+          const svg = svgEls.get(rootNode);
+          if (!el.isConnected || (svg && !svg.isConnected)) ensureStyle(rootNode);
+        }
       }
       if (isTopFrame) updateTitle();
     }
@@ -233,6 +247,7 @@
           // Detached shadow host: stop tracking (it is re-attached by scan() if it comes back).
           roots.delete(rootNode);
           styleEls.delete(rootNode);
+          svgEls.delete(rootNode);
           continue;
         }
         if (!rootNode.querySelectorAll) continue;

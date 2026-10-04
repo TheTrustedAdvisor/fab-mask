@@ -7,6 +7,9 @@
   'use strict';
 
   const MASK_ATTR = 'data-fabric-mask';
+  const PIXELATE_FILTER_ID = 'fab-mask-pixelate';
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const MIN_PIXEL = 6;
   const PICKER_ATTR = 'data-fabric-mask-picker';
 
   // Best-effort selectors for the signed-in user (Microsoft account manager / Fluent personas).
@@ -64,7 +67,59 @@
         `${sel} *{visibility:hidden!important;}`
       );
     }
+    if (settings.mode === 'pixelate') {
+      return `${sel}{filter:url("#${PIXELATE_FILTER_ID}")!important;}`;
+    }
     return `${sel}{filter:blur(${settings.blurPx}px)!important;}`;
+  }
+
+  function pixelSize(settings) {
+    return Math.max(MIN_PIXEL, Math.round((settings && settings.blurPx) || 8));
+  }
+
+  /*
+   * Mosaic filter: average each block (blur + alpha boost so thin text keeps its weight), sample one
+   * pixel per block and grow it back to the block size. Built with DOM APIs (no innerHTML) so it
+   * also works on pages that enforce Trusted Types.
+   */
+  const PIXELATE_PRIMITIVES = (s) => {
+    const c = Math.floor(s / 2);
+    return [
+      ['feGaussianBlur', { in: 'SourceGraphic', stdDeviation: (s / 2.5).toFixed(2) }],
+      ['feComponentTransfer', { result: 'avg' }, [['feFuncA', { type: 'linear', slope: '2.2' }]]],
+      ['feFlood', { x: c, y: c, width: 1, height: 1 }],
+      ['feComposite', { width: s, height: s }],
+      ['feTile', { result: 'grid' }],
+      ['feComposite', { in: 'avg', in2: 'grid', operator: 'in' }],
+      ['feMorphology', { operator: 'dilate', radius: c }]
+    ];
+  };
+
+  function buildPrimitive(doc, [name, attrs, children]) {
+    const el = doc.createElementNS(SVG_NS, name);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+    for (const child of children || []) el.appendChild(buildPrimitive(doc, child));
+    return el;
+  }
+
+  /** Creates (or updates, when `svg` is given) the hidden <svg> holding the mosaic filter. */
+  function renderPixelateSvg(doc, size, svg) {
+    if (!svg) {
+      svg = doc.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('width', '0');
+      svg.setAttribute('height', '0');
+      svg.setAttribute('style', 'position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;');
+    }
+    if (svg.dataset && svg.dataset.size === String(size)) return svg;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const filter = buildPrimitive(doc, ['filter', {
+      id: PIXELATE_FILTER_ID, x: 0, y: 0, width: '100%', height: '100%',
+      'color-interpolation-filters': 'sRGB'
+    }, PIXELATE_PRIMITIVES(size)]);
+    svg.appendChild(filter);
+    svg.setAttribute('data-size', String(size));
+    return svg;
   }
 
   /** Returns the full stylesheet text for the given (normalized) settings. */
@@ -75,16 +130,18 @@
     ];
     if (!settings || !settings.enabled) return parts.join('\n');
 
-    parts.push(maskRules(`[${MASK_ATTR}]`, settings));
-    if (settings.categories && settings.categories.userProfile) {
-      for (const s of USER_PROFILE_SELECTORS) parts.push(maskRules(s, settings));
-    }
-    if (settings.categories && settings.categories.workspaceNames) {
-      for (const s of WORKSPACE_NAME_SELECTORS) parts.push(maskRules(s, settings));
-    }
-    // One rule per custom selector: an invalid selector only drops its own rule.
-    for (const s of settings.customSelectors || []) {
-      if (isSafeSelector(s)) parts.push(maskRules(s, settings));
+    const selectors = [`[${MASK_ATTR}]`];
+    if (settings.categories && settings.categories.userProfile) selectors.push(...USER_PROFILE_SELECTORS);
+    if (settings.categories && settings.categories.workspaceNames) selectors.push(...WORKSPACE_NAME_SELECTORS);
+    for (const s of settings.customSelectors || []) if (isSafeSelector(s)) selectors.push(s);
+    // One rule per selector: an invalid (custom) selector only drops its own rule.
+    for (const s of selectors) parts.push(maskRules(s, settings));
+    if (settings.mode !== 'redact') {
+      // A masked element inside a masked element (e.g. a string token inside a masked editor line)
+      // would be filtered twice; a second mosaic pass samples the first one's gaps and the text
+      // nearly disappears. The outer filter already covers the inner content.
+      const all = `:is(${selectors.join(',')})`;
+      parts.push(`${all} ${all}{filter:none!important;}`);
     }
     return parts.join('\n');
   }
@@ -116,7 +173,7 @@
     return quote === null && stack.length === 0;
   }
 
-  const api = { MASK_ATTR, PICKER_ATTR, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
+  const api = { MASK_ATTR, PICKER_ATTR, PIXELATE_FILTER_ID, pixelSize, renderPixelateSvg, USER_PROFILE_SELECTORS, WORKSPACE_NAME_SELECTORS, buildCss, isSafeSelector };
 
   root.FabricMask = Object.assign(root.FabricMask || {}, api);
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

@@ -11,10 +11,17 @@ async function updateBadge(settings) {
   });
 }
 
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   await chrome.action.setBadgeBackgroundColor({ color: '#8a8886' });
+  const current = await FabricMask.loadSettings();
+  // 1.0.x persisted its defaults on install, so an untouched "blur 8px" there was never a user
+  // choice: move it to the new default pixel mode.
+  if (details.reason === 'update' && /^1\.0\./.test(details.previousVersion || '') &&
+      current.mode === 'blur' && current.blurPx === 8) {
+    current.mode = 'pixelate';
+  }
   // Persist normalized settings so new defaults are filled in after an update.
-  const settings = await FabricMask.saveSettings(await FabricMask.loadSettings());
+  const settings = await FabricMask.saveSettings(current);
   await updateBadge(settings);
 });
 

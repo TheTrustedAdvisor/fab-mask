@@ -43,7 +43,7 @@ What it hides:
 • Your own terms (customer, project or person names) and any element you pick on the page
 
 Works in notebooks (including code cells and outputs), the lakehouse explorer, pipelines and the
-OneLake catalog. Toggle with Alt+Shift+M. Blur or redact mode. English and German.
+OneLake catalog. Toggle with Alt+Shift+M. Pixelate, blur or redact mode. English and German.
 
 Privacy: no data collection, no network requests, settings stay local in your browser.
 Not affiliated with Microsoft.
@@ -64,7 +64,7 @@ Was verborgen wird:
 • Eigene Begriffe (Kunden-, Projekt- oder Personennamen) und beliebige Elemente per Auswahl auf der Seite
 
 Funktioniert auch in Notebooks (inkl. Code-Zellen und Ausgaben), im Lakehouse-Explorer, in Pipelines
-und im OneLake-Katalog. Umschalten mit Alt+Shift+M. Modus Unscharf oder Schwärzen. Deutsch und Englisch.
+und im OneLake-Katalog. Umschalten mit Alt+Shift+M. Modus Pixel, Unscharf oder Schwärzen. Deutsch und Englisch.
 
 Datenschutz: keine Datenerhebung, keine Netzwerkzugriffe, Einstellungen bleiben lokal im Browser.
 Nicht mit Microsoft verbunden.

@@ -72,7 +72,7 @@
     "message": "Redact"
   },
   "blurStrength": {
-    "message": "Blur strength"
+    "message": "Strength"
   },
   "revealOnHover": {
     "message": "Reveal on hover"
@@ -146,5 +146,8 @@
   },
   "saveFailed": {
     "message": "Saving failed."
+  },
+  "modePixelate": {
+    "message": "Pixelate"
   }
 }

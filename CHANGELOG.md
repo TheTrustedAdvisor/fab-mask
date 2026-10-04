@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.1.0] – 2026-10-04
+
+### Added
+- **Pixelate mode** (new default): a mosaic filter keeps masked text visible as coloured blocks
+  instead of fading into the background like the blur. Block size follows the "Strength" slider
+  (minimum 6 px so large headings stay unreadable). Installs still on the untouched 1.0.x default
+  (blur 8 px) switch to pixelate automatically.
+
+### Fixed
+- Masked elements nested inside other masked elements (e.g. string tokens in a masked notebook
+  line) are no longer filtered twice, which made them almost invisible.
+
 ## [1.0.1] – 2026-10-04
 
 ### Fixed
@@ -27,5 +39,6 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.1.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.0
 [1.0.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.1
 [1.0.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.0.0
