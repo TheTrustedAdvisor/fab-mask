@@ -26,9 +26,10 @@ if (version !== pkg.version) {
 }
 const repo = (pkg.repository && pkg.repository.url || '').replace(/^.*github\.com[/:]|\.git$/g, '');
 
+// dist/ only ever holds the current build – stale versions next to it are confusing.
+rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
 const zipPath = join(DIST, `fab-mask-${version}.zip`);
-if (existsSync(zipPath)) rmSync(zipPath);
 // -X: no extra file attributes, so the archive only depends on the file contents
 execFileSync('zip', ['-r', '-X', '-q', '-9', zipPath, '.', '-x', '*.DS_Store'], { cwd: SRC, stdio: 'inherit' });
 console.log(`ZIP  ${zipPath}`);

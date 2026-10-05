@@ -155,10 +155,14 @@ npx playwright install chromium   # once, for E2E tests and screenshots
 npm test                          # unit and DOM tests (node:test + jsdom)
 npm run test:e2e                  # end-to-end with the real extension in Chromium (incl. a perf test)
 npm run lint
-npm run build                     # dist/fab-mask-<version>.zip
+npm run build                     # dist/fab-mask-<version>.zip (local only; dist/ is recreated each build)
 npm run build:signed              # plus signed CRX + updates.xml (needs the signing key)
 npm run screenshots               # regenerate docs/images
 ```
+
+Official packages are built by CI and attached to the
+[GitHub releases](https://github.com/TheTrustedAdvisor/fab-mask/releases) – `dist/` is just a local,
+git-ignored build folder.
 
 The E2E tests serve Fabric-like fixtures on the real host names (requests are intercepted, no network
 access).
