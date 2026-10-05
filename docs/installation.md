@@ -1,8 +1,10 @@
 # Installation
 
-Fab Mask runs in **Google Chrome** and **Microsoft Edge** version 111 or later (Windows, macOS, Linux).
+Fab Mask runs in **Google Chrome** and **Microsoft Edge** version 111 or later and in **Mozilla
+Firefox** 142 or later (Windows, macOS, Linux).
 
 - [Single machine: load unpacked](#single-machine-load-unpacked)
+- [Firefox](#firefox)
 - [Enterprise deployment via policy](#enterprise-deployment-via-policy)
 - [Troubleshooting](#troubleshooting)
 
@@ -29,6 +31,22 @@ Fab Mask on the extensions page.
 
 Note: Chrome may show a notice about extensions in developer mode at startup. This is normal for
 unpacked extensions.
+
+## Firefox
+
+Firefox only installs add-ons permanently when they are signed by Mozilla (addons.mozilla.org).
+Until the AMO listing is live, load it as a **temporary add-on** (stays until Firefox restarts):
+
+1. Download **`fab-mask-<version>-firefox.zip`** from the
+   [releases page](https://github.com/TheTrustedAdvisor/fab-mask/releases/latest) and unzip it.
+2. Open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → select the
+   `manifest.json` in the unzipped folder.
+3. If Firefox asks for site access, allow it for the Fabric / Power BI sites
+   (`about:addons` → Fab Mask → *Permissions*).
+4. Reload open Fabric tabs.
+
+All features work as in Chrome/Edge. Shortcuts can be changed in `about:addons` → ⚙ →
+*Manage Extension Shortcuts*.
 
 ## Enterprise deployment via policy
 

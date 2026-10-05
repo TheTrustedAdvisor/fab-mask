@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.4.0] – 2026-10-05
+
+### Added
+- **Firefox support** (Firefox 142+): the build derives a Firefox manifest from the Chrome/Edge one
+  (event-page background, Gecko ID `fab-mask@thetrustedadvisor`, data-collection declaration
+  "none") and produces `fab-mask-<version>-firefox.zip`, attached to every release.
+- The code uses the promise-based `browser.*` namespace where available; closed shadow roots are
+  reached via `element.openOrClosedShadowRoot()` in Firefox.
+- CI runs Mozilla's add-on linter (`web-ext lint`) and a smoke test in a real Firefox.
+
 ## [1.3.4] – 2026-10-05
 
 ### Added
@@ -130,6 +140,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.4.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.0
 [1.3.4]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.4
 [1.3.3]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.3
 [1.3.2]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.2

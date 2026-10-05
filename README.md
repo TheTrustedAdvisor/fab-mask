@@ -4,8 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/TheTrustedAdvisor/fab-mask)](https://github.com/TheTrustedAdvisor/fab-mask/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Browser extension for **Chrome and Edge** that hides sensitive information in the **Microsoft Fabric
-portal** (`app.fabric.microsoft.com`, including Power BI) – for demos, screen sharing, screenshots and
+Browser extension for **Chrome, Edge and Firefox** that hides sensitive information in the **Microsoft
+Fabric portal** (`app.fabric.microsoft.com`, including Power BI) – for demos, screen sharing, screenshots and
 recordings.
 
 Inspired by [clarkio/azure-mask](https://github.com/clarkio/azure-mask) ("Az Mask") for the Azure portal.
@@ -56,6 +56,7 @@ masked. In fake-data mode the owner becomes a consistent fake person and the end
 |---|---|---|
 | **Load unpacked** (ZIP from the release) | Individuals, right away | [below](#quick-start-load-unpacked) |
 | **Enterprise policy** (signed CRX, auto-update) | IT / managed devices (Intune, GPO, Jamf) | [docs/installation.md](docs/installation.md#enterprise-deployment-via-policy) |
+| **Firefox** (`fab-mask-<version>-firefox.zip`) | Firefox 142+ | [docs/installation.md](docs/installation.md#firefox) |
 
 > On Windows and macOS, Chrome and Edge do not allow installing `.crx` files from outside their
 > stores by double-click. For individuals, "Load unpacked" is the direct way.
@@ -154,8 +155,10 @@ npm install
 npx playwright install chromium   # once, for E2E tests and screenshots
 npm test                          # unit and DOM tests (node:test + jsdom)
 npm run test:e2e                  # end-to-end with the real extension in Chromium (incl. a perf test)
+npm run lint:firefox              # Mozilla's add-on linter on the Firefox build
+npm run test:e2e:firefox          # smoke test in a real Firefox (FIREFOX_PATH=…; runs in CI)
 npm run lint
-npm run build                     # dist/fab-mask-<version>.zip (local only; dist/ is recreated each build)
+npm run build                     # dist/fab-mask-<version>.zip + -firefox.zip (local; dist/ is recreated each build)
 npm run build:signed              # plus signed CRX + updates.xml (needs the signing key)
 npm run screenshots               # regenerate docs/images
 ```
