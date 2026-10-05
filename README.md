@@ -10,6 +10,37 @@ recordings.
 
 Inspired by [clarkio/azure-mask](https://github.com/clarkio/azure-mask) ("Az Mask") for the Azure portal.
 
+## Why Fab Mask?
+
+The Fabric portal surfaces tenant-specific metadata throughout its UI: workspace, item, tenant and
+capacity **GUIDs**, **SQL analytics endpoints** and warehouse connection strings, **OneLake / ABFS
+paths**, **XMLA endpoints**, data source references, **UPNs** and the **display names** of owners,
+admins and the signed-in user. As soon as the portal is shown outside the tenant's trust boundary –
+a customer workshop, a conference session, a recorded tutorial, a support call, a screenshot in
+documentation – this metadata is disclosed. It is personal data in the GDPR sense, reveals customer
+and project context, and hands out exactly the identifiers needed to address a workspace or
+endpoint directly.
+
+The usual mitigations do not scale: dedicated demo tenants drift from reality, manual redaction in
+post-production is slow and error-prone, and live sessions cannot be redacted after the fact.
+
+**Fab Mask moves redaction into the rendering layer of the browser:**
+
+- **Client-side and read-only** – detection runs locally on the rendered DOM; nothing is sent
+  anywhere and nothing in the tenant, workspace or item is modified.
+- **Pattern- and context-based** – regex detection for identifiers, endpoints and secrets, plus
+  structural selectors for user and owner fields; person names are learned from those fields and
+  masked everywhere else.
+- **Real time** – a synchronous `MutationObserver` masks new content before the next paint,
+  including virtualized lists, Monaco editors and the cross-origin workload frames (notebooks,
+  lakehouse explorer, pipelines).
+- **Presentation-grade output** – pixelate, blur, redact, or deterministic **fake data** that keeps
+  demos readable (same person → same fake name, same ID → same fake ID).
+
+Typical scenarios: customer demos and proofs of concept on production-like tenants, partner and
+conference presentations, training and video content, support and troubleshooting sessions, and
+screenshots for documentation, blog posts or tickets.
+
 | Without Fab Mask | Pixelate (default) |
 |---|---|
 | ![OneLake catalog without masking](docs/images/portal-unmasked.jpg) | ![Owner, SQL connection string and avatar pixelated](docs/images/portal-pixelate.jpg) |
