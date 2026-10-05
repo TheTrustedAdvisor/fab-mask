@@ -80,12 +80,22 @@ entries on Fabric pages). No network requests, no remote code, no data collectio
 Then **Publish**. Certification usually takes up to **7 business days**; Partner Center shows the
 status and sends an e-mail.
 
+## Fab Mask's Edge Add-ons identity
+
+| Value | |
+|---|---|
+| Store ID | `0RDCKBR61GL8` |
+| Product ID | `2ee3cd53-9035-4a72-8b16-6e79c0cd3dd2` |
+| Extension (CRX) ID | `ngeccjajkajkbhaipmdbcfmhpabfengl` (derived from the store's public key – verified) |
+| Store URL (once published) | `https://microsoftedge.microsoft.com/addons/detail/ngeccjajkajkbhaipmdbcfmhpabfengl` |
+
 ## 3. After publication
 
 - Add the store link to the README installation table.
 - **Updates:** Partner Center → the extension → **Update** → upload the new release ZIP → submit.
   (This can later be automated in the release workflow with the Edge Add-ons publish API.)
-- **Extension ID:** the store assigns its own ID, different from the self-signed CRX
-  (`mamdngeehbhnikhehiplimphjgpfpdid`). Managed Edge devices can then force-install the store version
-  with `ExtensionInstallForcelist` = `<store-id>;https://edge.microsoft.com/extensionwebstorebase/v1/crx`.
+- **Extension ID:** the store version has the ID `ngeccjajkajkbhaipmdbcfmhpabfengl`, different from
+  the self-signed CRX (`mamdngeehbhnikhehiplimphjgpfpdid`). Managed Edge devices can then
+  force-install the store version with `ExtensionInstallForcelist` =
+  `ngeccjajkajkbhaipmdbcfmhpabfengl;https://edge.microsoft.com/extensionwebstorebase/v1/crx`.
   Use one channel per device, otherwise both copies run.
