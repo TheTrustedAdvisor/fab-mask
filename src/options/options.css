@@ -34,3 +34,9 @@ textarea.mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
 .chips button { border: 0; background: transparent; color: var(--fm-muted); cursor: pointer; font: inherit; padding: 0 6px; border-radius: 10px; }
 .chips button:hover { background: var(--fm-border); color: var(--fm-text); }
 .btn.small { padding: 3px 10px; font-weight: 400; }
+
+.inline-form .field-label { align-self: center; font-weight: 600; }
+.inline-form select {
+  flex: 1; min-width: 0; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--fm-border);
+  background: var(--fm-bg); color: var(--fm-text); font: inherit;
+}

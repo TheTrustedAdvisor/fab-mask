@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.3.0] – 2026-10-05
+
+### Added
+- **Presentation mode** (Alt+Shift+F or "Present" in the popup): switches the window to full screen
+  so the address bar – which contains workspace and item IDs – disappears from screen shares, turns
+  masking on and optionally applies a profile (options page). Toggling again restores the window.
+- **Right-click menu** on Fabric pages: "always hide “<selection>”" adds the selected text as a
+  custom term; "always hide this element" adds the right-clicked element as a custom selector.
+  New permission `contextMenus` (no install warning).
+
 ## [1.2.1] – 2026-10-05
 
 ### Fixed
@@ -87,6 +97,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.3.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.0
 [1.2.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.1
 [1.2.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.0
 [1.1.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.1

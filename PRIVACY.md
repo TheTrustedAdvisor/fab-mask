@@ -16,7 +16,8 @@ _Last updated: 2026-10-04_
 - Your settings (toggles, profiles, custom terms, custom CSS selectors) are also stored with
   `chrome.storage.local` only. Nothing is synced to your Google or Microsoft account. Uninstalling
   the extension deletes all of it.
-- The only permission requested is `storage`. Content scripts run only on the Fabric / Power BI
-  hosts listed in the manifest.
+- Permissions: `storage` (settings) and `contextMenus` (right-click entries). Content scripts run
+  only on the Fabric / Power BI hosts listed in the manifest. Presentation mode only changes the
+  window state (full screen) via the `windows` API, which needs no permission.
 
 Questions: open an issue at <https://github.com/TheTrustedAdvisor/fab-mask/issues>.

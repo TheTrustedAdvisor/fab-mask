@@ -95,6 +95,15 @@
   });
   $('preview').addEventListener('click', () => update((s) => { s.preview = !s.preview; }, { profileField: false }));
 
+  // Presentation mode is handled by the service worker (it also restores the window later).
+  const currentWindow = await chrome.windows.getCurrent();
+  $('present').setAttribute('aria-pressed', String(currentWindow.state === 'fullscreen'));
+  $('present').addEventListener('click', async () => {
+    const reply = await chrome.runtime.sendMessage({ type: MSG.TOGGLE_PRESENTATION, windowId: currentWindow.id }).catch(() => null);
+    if (reply && reply.ok) window.close();
+    else $('page-status').textContent = FM.t('saveFailed');
+  });
+
   $('open-options').addEventListener('click', (e) => {
     e.preventDefault();
     chrome.runtime.openOptionsPage();

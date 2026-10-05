@@ -250,5 +250,32 @@
   },
   "removeName": {
     "message": "Remove"
+  },
+  "menuHideSelection": {
+    "message": "Fab Mask: always hide “%s”"
+  },
+  "menuHideElement": {
+    "message": "Fab Mask: always hide this element"
+  },
+  "commandPresentation": {
+    "message": "Presentation mode: full screen (hides the address bar) + masking on"
+  },
+  "presentButton": {
+    "message": "Present"
+  },
+  "presentButtonHint": {
+    "message": "Full screen hides the address bar with workspace and item IDs; masking is turned on (Alt+Shift+F)"
+  },
+  "sectionPresentation": {
+    "message": "Presentation mode"
+  },
+  "presentationHint": {
+    "message": "Alt+Shift+F or \"Present\" in the popup switches the window to full screen – the address bar with workspace and item IDs disappears from your screen share – and turns masking on. Press it again to return."
+  },
+  "presentationProfileLabel": {
+    "message": "Apply profile when presenting"
+  },
+  "presentationKeep": {
+    "message": "Keep current settings"
   }
 }

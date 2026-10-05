@@ -250,5 +250,32 @@
   },
   "removeName": {
     "message": "Entfernen"
+  },
+  "menuHideSelection": {
+    "message": "Fab Mask: „%s“ immer verbergen"
+  },
+  "menuHideElement": {
+    "message": "Fab Mask: dieses Element immer verbergen"
+  },
+  "commandPresentation": {
+    "message": "Präsentationsmodus: Vollbild (verbirgt die Adressleiste) + Maskierung an"
+  },
+  "presentButton": {
+    "message": "Präsentieren"
+  },
+  "presentButtonHint": {
+    "message": "Vollbild verbirgt die Adressleiste mit Workspace- und Item-IDs; die Maskierung wird eingeschaltet (Alt+Shift+F)"
+  },
+  "sectionPresentation": {
+    "message": "Präsentationsmodus"
+  },
+  "presentationHint": {
+    "message": "Alt+Shift+F oder „Präsentieren“ im Popup schaltet das Fenster in den Vollbildmodus – die Adressleiste mit Workspace- und Item-IDs verschwindet aus der Bildschirmfreigabe – und die Maskierung ein. Nochmals drücken beendet ihn."
+  },
+  "presentationProfileLabel": {
+    "message": "Profil beim Präsentieren anwenden"
+  },
+  "presentationKeep": {
+    "message": "Aktuelle Einstellungen beibehalten"
   }
 }

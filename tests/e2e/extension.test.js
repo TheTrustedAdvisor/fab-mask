@@ -295,3 +295,50 @@ test('performance: large lists with owners, tooltips and IDs stay fast (all feat
   assert.ok(on.churnMs < off.churnMs + 1500, `re-render overhead too high: ${on.churnMs} vs ${off.churnMs}`);
   await page.close();
 });
+
+test('v1.3: context menu hides the right-clicked element and the selected text', async () => {
+  await worker.evaluate(() => chrome.storage.local.clear());
+  const page = await context.newPage();
+  await page.goto(PORTAL);
+  await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
+  await page.bringToFront();
+
+  // "Always hide this element": a real (trusted) right-click, then the menu item
+  await page.click('#plain', { button: 'right' });
+  await worker.evaluate(async () => {
+    const [tab] = await chrome.tabs.query({ active: true });
+    await self.fabMaskBackground.handleMenuClick({ menuItemId: 'fab-mask-hide-element', frameId: 0 }, tab);
+  });
+  await page.waitForFunction(() => getComputedStyle(document.querySelector('#plain')).filter !== 'none');
+  let s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.deepEqual(s.customSelectors, ['#plain']);
+
+  // "Always hide '<selection>'"
+  await worker.evaluate(async () => {
+    await self.fabMaskBackground.handleMenuClick({ menuItemId: 'fab-mask-add-term', selectionText: '  finance\n team ' }, null);
+  });
+  await page.waitForFunction(() => document.querySelector('#desc').hasAttribute('data-fabric-mask'));
+  s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.ok(s.customTerms.includes('finance team'));
+  await page.close();
+});
+
+test('v1.3: presentation mode goes full screen, turns masking on and restores the window', async () => {
+  await worker.evaluate(() => chrome.storage.local.set({ settings: { enabled: false, presentationProfile: 'recording' } }));
+  const page = await context.newPage();
+  await page.goto(PORTAL);
+  const windowId = await worker.evaluate(async () => (await chrome.windows.getLastFocused()).id);
+  const before = await worker.evaluate(async (id) => (await chrome.windows.get(id)).state, windowId);
+
+  assert.equal(await worker.evaluate((id) => self.fabMaskBackground.togglePresentation(id), windowId), true);
+  await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
+  const s = await worker.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.equal(s.enabled, true);
+  assert.equal(s.mode, 'fake', 'presentation profile "recording" applied');
+  assert.equal(await worker.evaluate(async (id) => (await chrome.windows.get(id)).state, windowId), 'fullscreen');
+
+  assert.equal(await worker.evaluate((id) => self.fabMaskBackground.togglePresentation(id), windowId), false);
+  await page.waitForTimeout(300);
+  assert.equal(await worker.evaluate(async (id) => (await chrome.windows.get(id)).state, windowId), before === 'fullscreen' ? 'normal' : before);
+  await page.close();
+});

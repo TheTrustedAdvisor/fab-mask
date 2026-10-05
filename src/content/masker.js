@@ -81,6 +81,7 @@
     let pageTitle = null;
     let lastSetTitle = null;
     let picker = null;
+    let lastContextTarget = null; // element of the last (trusted) right-click, for the context menu
     const pendingNames = new Set();
     // New fake overlays whose positioning still has to be checked (batched: reading computed style
     // between DOM writes would force a style recalculation per element).
@@ -515,6 +516,22 @@
       if (isTopFrame && settings.preview) updateBadge();
     }
 
+    function onContextMenu(event) {
+      if (!event.isTrusted) return;
+      const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+      const el = path.find((n) => n && n.nodeType === 1) || event.target;
+      lastContextTarget = el && el.nodeType === 1 ? el : null;
+    }
+
+    /** Context menu "always hide this element": same selector logic as the element picker. */
+    async function hideContextElement() {
+      const el = lastContextTarget;
+      if (!el || !el.isConnected) return null;
+      const selector = FM.generateSelector(el);
+      await FM.addCustomSelector(selector);
+      return selector;
+    }
+
     function onInputEvent(event) {
       const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
       evaluate(path[0] || event.target);
@@ -698,6 +715,9 @@
         case MSG.STOP_PICKER:
           if (picker) picker.stop();
           return undefined;
+        case MSG.HIDE_CONTEXT_ELEMENT:
+          hideContextElement().then((selector) => sendResponse({ ok: Boolean(selector), selector }), () => sendResponse({ ok: false }));
+          return true; // async response
         default:
           return undefined;
       }
@@ -722,6 +742,7 @@
       flushPositions();
       document.addEventListener('input', onInputEvent, true);
       document.addEventListener('change', onInputEvent, true);
+      document.addEventListener('contextmenu', onContextMenu, true);
       updatePolling();
       if (isTopFrame) updateTitle();
       if (chrome && chrome.storage) {
@@ -737,6 +758,7 @@
       observer.disconnect();
       document.removeEventListener('input', onInputEvent, true);
       document.removeEventListener('change', onInputEvent, true);
+      document.removeEventListener('contextmenu', onContextMenu, true);
       if (pollTimer) window.clearInterval(pollTimer);
       pollTimer = null;
       if (learnTimer) window.clearTimeout(learnTimer);
@@ -757,6 +779,7 @@
       applyLearnedNames,
       setCurtain,
       flushLearned,
+      hideContextElement,
       pollInputs: poll,
       getSettings: () => settings
     };

@@ -32,6 +32,8 @@
     stripTooltips: true,
     preview: false,
     activeProfile: 'custom',
+    // Profile applied when presentation mode starts ('' = keep the current settings).
+    presentationProfile: '',
     categories: Object.freeze({
       guid: true,
       email: true,
@@ -64,8 +66,30 @@
     STOP_PICKER: 'fabric-mask:stop-picker',
     PICKER_DONE: 'fabric-mask:picker-done',
     PING: 'fabric-mask:ping',
-    LEARN_NAMES: 'fabric-mask:learn-names'
+    LEARN_NAMES: 'fabric-mask:learn-names',
+    HIDE_CONTEXT_ELEMENT: 'fabric-mask:hide-context-element',
+    TOGGLE_PRESENTATION: 'fabric-mask:toggle-presentation'
   });
+
+  /** Normalizes selected text for use as a custom term; returns null if unusable. */
+  function termFromSelection(text) {
+    if (typeof text !== 'string') return null;
+    const term = text.replace(/\s+/g, ' ').trim();
+    return term.length >= 2 && term.length <= MAX_ENTRY_LENGTH ? term : null;
+  }
+
+  /** Adds a custom term / selector unless already present. Returns the stored settings. */
+  function addCustomTerm(term) {
+    return updateSettings((s) => {
+      if (!s.customTerms.some((t) => t.toLowerCase() === term.toLowerCase())) s.customTerms.push(term);
+    });
+  }
+
+  function addCustomSelector(selector) {
+    return updateSettings((s) => {
+      if (!s.customSelectors.includes(selector)) s.customSelectors.push(selector);
+    });
+  }
 
   // ------------------------------------------------------------------ profiles
 
@@ -151,6 +175,7 @@
       stripTooltips: bool(src.stripTooltips, DEFAULT_SETTINGS.stripTooltips),
       preview: bool(src.preview, DEFAULT_SETTINGS.preview),
       activeProfile: typeof src.activeProfile === 'string' && src.activeProfile ? src.activeProfile.slice(0, 64) : 'custom',
+      presentationProfile: typeof src.presentationProfile === 'string' ? src.presentationProfile.slice(0, 64) : '',
       categories,
       customTerms: cleanList(src.customTerms, 2, false),
       // CSS class / attribute values are case-sensitive
@@ -358,6 +383,9 @@
     loadSettings,
     saveSettings,
     updateSettings,
+    termFromSelection,
+    addCustomTerm,
+    addCustomSelector,
     extractNames,
     isPlausibleName,
     normalizeLearned,

@@ -66,6 +66,10 @@ the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerb
 | **Alt+Shift+M** | Masking on/off (badge "OFF") |
 | **Alt+Shift+B** | **Curtain**: instantly cover all Fabric tabs with a neutral overlay (badge "❚❚") |
 | **Alt+Shift+P** | **Preview mode**: outline everything that is masked, with a counter (badge "✓") |
+| **Alt+Shift+F** | **Presentation mode**: full screen – the address bar with workspace and item IDs disappears from your screen share – and masking on, optionally with a profile |
+
+- **Right-click** on a Fabric page: *"Fab Mask: always hide “…”"* for selected text (becomes a custom
+  term) or *"Fab Mask: always hide this element"* (becomes a custom selector)
 
 - **Profiles**: *Customer demo*, *Recording (fake data)*, *Screenshots (redact)*, *Internal training* –
   or save your own on the options page
@@ -82,8 +86,8 @@ the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerb
 
 ## Permissions & privacy
 
-- Only permission: `storage`. No `tabs`, no `scripting`, no host permissions beyond the content-script
-  matches.
+- Permissions: `storage` and `contextMenus` (for the right-click entries). No `tabs`, no `scripting`,
+  no host permissions beyond the content-script matches.
 - The extension sends **no data** anywhere – no telemetry, no network requests.
 - Settings, profiles and **learned person names** are stored locally only (`chrome.storage.local`) and
   intentionally **not** synced, so customer or person names never end up in your Google/Microsoft
@@ -96,7 +100,8 @@ See [PRIVACY.md](PRIVACY.md).
 ## Limitations
 
 - The **address bar** (which contains workspace and item IDs) cannot be changed by any extension –
-  share only the window content or use full screen (F11).
+  use **presentation mode** (Alt+Shift+F), which hides it via full screen, or share only the window
+  content.
 - Content drawn on a **canvas** (e.g. report visuals) is not covered.
 - Person names are recognized via owner/profile fields, learned names or **custom terms**.
 - Custom terms and selectors apply as soon as the settings are loaded (milliseconds after page start,

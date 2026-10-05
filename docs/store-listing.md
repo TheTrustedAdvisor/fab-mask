@@ -57,6 +57,7 @@ exposed during screen sharing, recordings or screenshots.
 | Permission | Justification |
 |---|---|
 | `storage` | Stores the user's settings (on/off, categories, custom terms and selectors) locally. |
+| `contextMenus` | Adds "always hide this text / element" entries to the right-click menu on Fabric pages. |
 | Host access (content scripts on `*.fabric.microsoft.com`, `*.powerbi.com`, `*.powerbigov.us`, `*.powerbi.cn`, `*.pbidedicated.windows.net`, `*.analysis.windows.net`) | The extension must read page text on the Fabric / Power BI portal and its embedded frames (notebooks, lakehouse explorer, pipelines) to detect and hide sensitive values. It runs on no other sites. |
 | Remote code | None. All code is packaged. |
 

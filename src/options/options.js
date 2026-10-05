@@ -123,6 +123,25 @@
     }
   });
 
+  // ------------------------------------------------------- presentation mode
+
+  async function renderPresentationProfiles(current) {
+    const select = $('presentation-profile');
+    select.textContent = '';
+    select.add(new Option(FM.t('presentationKeep'), ''));
+    for (const p of await FM.allProfiles()) select.add(new Option(p.nameKey ? FM.t(p.nameKey) : p.name, p.id));
+    select.value = [...select.options].some((o) => o.value === current) ? current : '';
+  }
+
+  $('presentation-profile').addEventListener('change', async (e) => {
+    try {
+      await FM.updateSettings((s) => { s.presentationProfile = e.target.value; });
+      showStatus(FM.t('saved'));
+    } catch {
+      showStatus(FM.t('saveFailed'), true);
+    }
+  });
+
   // ----------------------------------------------------------- learned names
 
   function renderLearned(names) {
@@ -157,9 +176,13 @@
     if (names) renderLearned(names);
     const profiles = FM.valueFromChange(changes, areaName, FM.PROFILES_KEY, FM.normalizeProfiles);
     if (profiles) renderProfiles(profiles);
+    if (profiles || next) {
+      FM.loadSettings().then((s) => renderPresentationProfiles(s.presentationProfile));
+    }
   });
 
   render(await FM.loadSettings(), { force: true });
   renderProfiles(await FM.loadProfiles());
   renderLearned(await FM.loadLearnedNames());
+  await renderPresentationProfiles((await FM.loadSettings()).presentationProfile);
 })();

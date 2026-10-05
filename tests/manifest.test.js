@@ -11,7 +11,7 @@ const de = require('../src/_locales/de/messages.json');
 
 test('manifest is MV3 with minimal permissions and matching version', () => {
   assert.equal(manifest.manifest_version, 3);
-  assert.deepEqual(manifest.permissions, ['storage']);
+  assert.deepEqual(manifest.permissions, ['storage', 'contextMenus']);
   assert.equal(manifest.host_permissions, undefined);
   assert.equal(manifest.version, pkg.version);
 });

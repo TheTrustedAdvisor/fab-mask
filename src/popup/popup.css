@@ -39,7 +39,9 @@ h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: v
 
 .segmented label + label { border-left: 0; }
 .segmented label:nth-child(n+3) span { border-top: 1px solid var(--fm-border); }
-.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.quick .btn { padding: 6px 4px; font-size: 12px; }
+#present[aria-pressed="true"] { background: #0f6cbd; border-color: #0f6cbd; color: #fff; }
 .btn.toggle[aria-pressed="true"] { background: var(--fm-accent); border-color: var(--fm-accent); color: var(--fm-on-accent); }
 #curtain[aria-pressed="true"] { background: #424242; border-color: #424242; color: #fff; }
 #preview[aria-pressed="true"] { background: #13a10e; border-color: #13a10e; color: #fff; }

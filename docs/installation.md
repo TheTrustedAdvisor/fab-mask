@@ -101,5 +101,5 @@ Open `chrome://policy` or `edge://policy` → *Reload policies*. Fab Mask then a
 | Something is not masked | In the popup, use **Pick element to mask** and click it, or add a term on the options page. Please open an issue (without real data). |
 | Too much is masked | Turn the category off in the popup; check custom selectors on the options page. |
 | A person name keeps being masked | Remove it from the learned names on the options page – removed names are not learned again. |
-| Shortcuts Alt+Shift+M / B / P do nothing | `chrome://extensions/shortcuts` or `edge://extensions/shortcuts` – another extension may use them. |
+| Shortcuts Alt+Shift+M / B / P / F do nothing | `chrome://extensions/shortcuts` or `edge://extensions/shortcuts` – another extension may use them. |
 | Policy installation fails | Check errors in `chrome://policy`; the update URL must be reachable from the device (github.com). |
