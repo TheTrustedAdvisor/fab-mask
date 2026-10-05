@@ -89,14 +89,6 @@
   "moreSettings": {
     "message": "Custom terms & selectors…"
   },
-  "shortcutHint": {
-    "message": "Shortcut: $KEY$",
-    "placeholders": {
-      "key": {
-        "content": "$1"
-      }
-    }
-  },
   "optionsTitle": {
     "message": "Fab Mask – Settings"
   },
@@ -277,5 +269,11 @@
   },
   "presentationKeep": {
     "message": "Keep current settings"
+  },
+  "sendFeedback": {
+    "message": "Send feedback"
+  },
+  "sendFeedbackHint": {
+    "message": "Opens a pre-filled GitHub issue (version, browser and mode only – no page URLs, terms or names)"
   }
 }

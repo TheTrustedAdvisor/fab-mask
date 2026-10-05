@@ -140,11 +140,10 @@
   $('page-status').textContent = FM.t(activeTabId !== null ? 'popupActiveHere' : 'popupNotFabric');
   $('pick').disabled = activeTabId === null;
 
-  try {
-    const commands = await chrome.commands.getAll();
-    const toggle = commands.find((c) => c.name === 'toggle-masking');
-    if (toggle && toggle.shortcut) $('shortcut').textContent = FM.t('shortcutHint', [toggle.shortcut]);
-  } catch {
-    // commands API unavailable – hide hint
-  }
+  $('feedback').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const url = FM.feedback.feedbackUrl({ version: chrome.runtime.getManifest().version, settings });
+    await chrome.tabs.create({ url });
+    window.close();
+  });
 })();

@@ -80,6 +80,8 @@ the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerb
 - **Pick element**: click in the popup, then on any element – it stays masked from then on
 - **Options page**: custom terms & selectors, profiles, list of learned names (remove individually or
   forget all)
+- **Send feedback** (popup and options page): opens a pre-filled GitHub issue with version, browser
+  and mode only – no page URLs, custom terms or names
 - Changes apply **instantly**, no reload · UI in English and German
 
 <br clear="right">
@@ -140,6 +142,7 @@ src/
   shared/settings.js        Settings model, storage, profiles, learned names, message types
   shared/detector.js        Regex detection per category (bounded, ReDoS-tested), match kinds
   shared/fake.js            Deterministic, salted fake values (names, GUIDs, e-mails, hosts …)
+  shared/feedback.js        Pre-filled GitHub issue URL with non-sensitive diagnostics
   shared/styles.js          CSS generation, selectors for user/person/workspace fields
   content/masker.js         Content script: MutationObserver, inputs, tooltips, shadow DOM, title,
                             fake overlays, curtain, preview badge, name learning

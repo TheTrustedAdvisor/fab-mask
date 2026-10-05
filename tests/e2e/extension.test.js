@@ -342,3 +342,24 @@ test('v1.3: presentation mode goes full screen, turns masking on and restores th
   assert.equal(await worker.evaluate(async (id) => (await chrome.windows.get(id)).state, windowId), before === 'fullscreen' ? 'normal' : before);
   await page.close();
 });
+
+test('v1.3: "Send feedback" opens a pre-filled GitHub issue form', async () => {
+  await worker.evaluate(() => chrome.storage.local.set({ settings: { customTerms: ['Contoso Secret'] } }));
+  const popup = await context.newPage();
+  await popup.goto(`chrome-extension://${extensionId}/popup/popup.html`);
+  // Record what the popup opens (offline; reading another tab's URL would need the "tabs" permission).
+  await popup.evaluate(() => {
+    window.__opened = null;
+    chrome.tabs.create = async ({ url }) => { window.__opened = url; };
+    window.close = () => {};
+  });
+  await popup.click('#feedback');
+  await popup.waitForFunction(() => window.__opened);
+  const href = await popup.evaluate(() => window.__opened);
+  const url = new URL(href);
+  assert.equal(url.origin + url.pathname, 'https://github.com/TheTrustedAdvisor/fab-mask/issues/new');
+  assert.equal(url.searchParams.get('template'), 'feedback.yml');
+  assert.match(url.searchParams.get('environment'), /^Fab Mask \d+\.\d+\.\d+ · .* · mode pixelate/);
+  assert.ok(!href.includes('Contoso'));
+  await popup.close();
+});

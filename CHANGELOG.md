@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.3.1] – 2026-10-05
+
+### Added
+- **Send feedback** link in the popup and on the options page: opens a pre-filled GitHub issue form
+  (type, description, environment). Only non-sensitive diagnostics are filled in – extension
+  version, browser, OS, mode, profile, enabled categories and the *number* of custom terms and
+  selectors; never page URLs, terms, selectors or learned names.
+
+### Changed
+- The popup footer shows "Send feedback" instead of the masking shortcut hint (all shortcuts are
+  listed in the README).
+
 ## [1.3.0] – 2026-10-05
 
 ### Added
@@ -97,6 +109,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.3.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.1
 [1.3.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.0
 [1.2.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.1
 [1.2.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.0

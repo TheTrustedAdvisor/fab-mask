@@ -181,6 +181,12 @@
     }
   });
 
+  $('feedback').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const url = FM.feedback.feedbackUrl({ version: chrome.runtime.getManifest().version, settings: await FM.loadSettings() });
+    await chrome.tabs.create({ url });
+  });
+
   render(await FM.loadSettings(), { force: true });
   renderProfiles(await FM.loadProfiles());
   renderLearned(await FM.loadLearnedNames());

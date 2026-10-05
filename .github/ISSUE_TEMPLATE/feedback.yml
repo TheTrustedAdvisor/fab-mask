@@ -1,0 +1,34 @@
+name: Feedback
+description: Report a bug, something that is not masked, or suggest an idea
+title: "[Feedback] "
+labels: [feedback]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping to improve Fab Mask!
+        ⚠️ **Do not post real tenant data.** Replace names, IDs and e-mails in screenshots and HTML
+        snippets with fake values (e.g. `contoso`, `00000000-0000-0000-0000-000000000000`).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options:
+        - Bug
+        - Something is not masked
+        - Idea / feature request
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, where in the portal, and what did you expect? For unmasked content, the element's HTML with fake values helps (right-click → Inspect → Copy outerHTML).
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Filled in automatically by "Send feedback" in the extension (no page URLs, terms or names).

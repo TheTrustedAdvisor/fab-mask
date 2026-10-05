@@ -89,14 +89,6 @@
   "moreSettings": {
     "message": "Eigene Begriffe & Selektoren…"
   },
-  "shortcutHint": {
-    "message": "Tastenkürzel: $KEY$",
-    "placeholders": {
-      "key": {
-        "content": "$1"
-      }
-    }
-  },
   "optionsTitle": {
     "message": "Fab Mask – Einstellungen"
   },
@@ -277,5 +269,11 @@
   },
   "presentationKeep": {
     "message": "Aktuelle Einstellungen beibehalten"
+  },
+  "sendFeedback": {
+    "message": "Feedback senden"
+  },
+  "sendFeedbackHint": {
+    "message": "Öffnet ein vorausgefülltes GitHub-Issue (nur Version, Browser und Modus – keine Seiten-URLs, Begriffe oder Namen)"
   }
 }

@@ -40,3 +40,5 @@ textarea.mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   flex: 1; min-width: 0; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--fm-border);
   background: var(--fm-bg); color: var(--fm-text); font: inherit;
 }
+
+.feedback-row { margin: 0 0 16px; text-align: right; }
