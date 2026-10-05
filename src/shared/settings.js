@@ -212,8 +212,14 @@
   // browser account, and local storage has no 8 KB per-item quota.
   const STORAGE_AREA = 'local';
 
+  /** Extension API: Firefox's promise-based `browser.*`, else Chrome/Edge `chrome.*`. */
+  function extensionApi() {
+    return root.browser || root.chrome;
+  }
+
   function getStorageArea() {
-    return root.chrome && root.chrome.storage && root.chrome.storage[STORAGE_AREA];
+    const api = extensionApi();
+    return api && api.storage && api.storage[STORAGE_AREA];
   }
 
   /** Returns the new settings if a storage.onChanged event concerns them, otherwise undefined. */
@@ -375,6 +381,7 @@
     MIN_PIXEL,
     MESSAGES,
     STORAGE_AREA,
+    extensionApi,
     PROFILE_FIELDS,
     BUILTIN_PROFILES,
     normalizeSettings,

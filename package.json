@@ -13,7 +13,9 @@
     "build": "node scripts/package.mjs",
     "build:signed": "CRX_KEY_PATH=${CRX_KEY_PATH:-$HOME/.config/fab-mask/fab-mask.pem} node scripts/package.mjs",
     "screenshots": "node scripts/screenshots.mjs",
-    "store-assets": "node scripts/store-assets.mjs"
+    "store-assets": "node scripts/store-assets.mjs",
+    "lint:firefox": "npm run build && web-ext lint --source-dir dist/firefox",
+    "test:e2e:firefox": "npm run build && node --test tests/e2e-firefox/*.test.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -21,7 +23,9 @@
     "eslint": "^9.0.0",
     "globals": "^15.0.0",
     "jsdom": "^25.0.0",
-    "playwright": "^1.50.0"
+    "playwright": "^1.50.0",
+    "puppeteer-core": "^25.12.0",
+    "web-ext": "^10.7.0"
   },
   "repository": {
     "type": "git",

@@ -24,9 +24,9 @@
         version = brand.version;
       }
     } else if (typeof n.userAgent === 'string') {
-      const m = /(Edg|Chrome)\/(\d+)/.exec(n.userAgent);
+      const m = /(Firefox|Edg|Chrome)\/(\d+)/.exec(n.userAgent);
       if (m) {
-        browser = m[1] === 'Edg' ? 'Microsoft Edge' : 'Google Chrome';
+        browser = { Firefox: 'Mozilla Firefox', Edg: 'Microsoft Edge', Chrome: 'Google Chrome' }[m[1]];
         version = m[2];
       }
     }

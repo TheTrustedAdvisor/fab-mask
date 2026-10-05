@@ -22,7 +22,7 @@ module.exports = [
   },
   {
     // Callbacks passed to page.evaluate / worker.evaluate run in the browser.
-    files: ['tests/e2e/**/*.js'],
+    files: ['tests/e2e/**/*.js', 'tests/e2e-firefox/**/*.js'],
     languageOptions: { globals: { ...globals.node, ...globals.browser, ...globals.webextensions } }
   },
   {

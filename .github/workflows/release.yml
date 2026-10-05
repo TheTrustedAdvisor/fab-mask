@@ -30,6 +30,7 @@ jobs:
       - run: npm test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run lint:firefox
 
       - name: Build signed packages
         env:
@@ -65,4 +66,5 @@ jobs:
             --notes-file notes.md \
             "dist/fab-mask-$VERSION.zip" \
             "dist/fab-mask-$VERSION.crx" \
+            "dist/fab-mask-$VERSION-firefox.zip" \
             dist/updates.xml

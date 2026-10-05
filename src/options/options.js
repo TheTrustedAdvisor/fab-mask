@@ -2,6 +2,9 @@
 (async function () {
   'use strict';
 
+  // Firefox: promise-based browser.*; Chrome/Edge: chrome.*
+  const chrome = globalThis.browser || globalThis.chrome;
+
   const FM = FabricMask;
   const $ = (id) => document.getElementById(id);
   FM.localize(document);

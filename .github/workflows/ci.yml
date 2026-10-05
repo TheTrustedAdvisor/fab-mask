@@ -27,3 +27,25 @@ jobs:
         with:
           name: fab-mask-zip
           path: dist/*.zip
+
+  firefox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Mozilla's add-on linter – the same checks addons.mozilla.org runs.
+      - run: npm run lint:firefox
+      - name: Install Firefox
+        run: |
+          FIREFOX_PATH=$(npx --yes @puppeteer/browsers install firefox@stable --path "$RUNNER_TEMP/browsers" | tail -1 | awk '{print $NF}')
+          echo "FIREFOX_PATH=$FIREFOX_PATH" >> "$GITHUB_ENV"
+          "$FIREFOX_PATH" --version
+      - run: npm run test:e2e:firefox
+      - uses: actions/upload-artifact@v7
+        with:
+          name: fab-mask-firefox-zip
+          path: dist/*-firefox.zip

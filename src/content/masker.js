@@ -230,9 +230,18 @@
 
     function shadowRootOf(el) {
       if (el.shadowRoot) return el.shadowRoot;
-      // Closed shadow roots are reachable for extensions via chrome.dom (custom elements only,
-      // which are the only elements that can host one besides a few built-ins).
-      if (el.localName.includes('-') && chrome && chrome.dom && chrome.dom.openOrClosedShadowRoot) {
+      // Closed shadow roots are reachable for extensions (custom elements only, which are the only
+      // elements that can host one besides a few built-ins): Firefox exposes
+      // element.openOrClosedShadowRoot() to content scripts, Chrome/Edge chrome.dom.
+      if (!el.localName.includes('-')) return null;
+      if (typeof el.openOrClosedShadowRoot === 'function') {
+        try {
+          return el.openOrClosedShadowRoot();
+        } catch {
+          return null;
+        }
+      }
+      if (chrome && chrome.dom && chrome.dom.openOrClosedShadowRoot) {
         try {
           return chrome.dom.openOrClosedShadowRoot(el);
         } catch {
@@ -790,7 +799,7 @@
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 
   // Auto-start inside the extension (guards against double injection).
-  const chromeApi = root.chrome;
+  const chromeApi = root.browser || root.chrome; // Firefox: promise-based browser.*
   if (chromeApi && chromeApi.runtime && chromeApi.runtime.id && root.document && !root.__fabricMaskStarted) {
     root.__fabricMaskStarted = true;
     createMasker({ window: root, chrome: chromeApi, FabricMask: root.FabricMask }).start();

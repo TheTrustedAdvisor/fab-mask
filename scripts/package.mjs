@@ -6,12 +6,13 @@
 //
 // Signing key: CRX_KEY_PATH=<file.pem>, or CRX_PRIVATE_KEY=<PEM contents> (CI secret).
 // Without a key only the ZIP is built.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, mkdtempSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, mkdtempSync, cpSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import crx3 from 'crx3';
+import { toFirefoxManifest } from './firefox-manifest.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'src');
@@ -33,6 +34,15 @@ const zipPath = join(DIST, `fab-mask-${version}.zip`);
 // -X: no extra file attributes, so the archive only depends on the file contents
 execFileSync('zip', ['-r', '-X', '-q', '-9', zipPath, '.', '-x', '*.DS_Store'], { cwd: SRC, stdio: 'inherit' });
 console.log(`ZIP  ${zipPath}`);
+
+// Firefox: same files, derived manifest. dist/firefox/ stays unpacked for `web-ext lint` and tests;
+// addons.mozilla.org signs the ZIP itself.
+const firefoxDir = join(DIST, 'firefox');
+cpSync(SRC, firefoxDir, { recursive: true, filter: (p) => !p.endsWith('.DS_Store') });
+writeFileSync(join(firefoxDir, 'manifest.json'), `${JSON.stringify(toFirefoxManifest(manifest), null, 2)}\n`);
+const firefoxZip = join(DIST, `fab-mask-${version}-firefox.zip`);
+execFileSync('zip', ['-r', '-X', '-q', '-9', firefoxZip, '.'], { cwd: firefoxDir, stdio: 'inherit' });
+console.log(`ZIP  ${firefoxZip}`);
 
 let keyPath = process.env.CRX_KEY_PATH;
 if (!keyPath && process.env.CRX_PRIVATE_KEY) {
