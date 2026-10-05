@@ -12,11 +12,12 @@ Inspired by [clarkio/azure-mask](https://github.com/clarkio/azure-mask) ("Az Mas
 
 | Without Fab Mask | Pixelate (default) |
 |---|---|
-| ![Without masking](docs/images/demo-unmasked.png) | ![Pixelated](docs/images/demo-masked.png) |
+| ![OneLake catalog without masking](docs/images/portal-unmasked.jpg) | ![Owner, SQL connection string and avatar pixelated](docs/images/portal-pixelate.jpg) |
 | **Fake data** | **Preview mode** |
-| ![Fake data](docs/images/demo-fake.png) | ![Preview mode](docs/images/demo-preview.png) |
+| ![Owner and SQL endpoint replaced with fake values](docs/images/portal-fake.jpg) | ![Masked areas outlined, with counter](docs/images/portal-preview.jpg) |
 
-<sub>Screenshots of a demo page with made-up data ([docs/demo](docs/demo/workspace.html)).</sub>
+<sub>The OneLake catalog of a Fabric demo tenant: owner, SQL connection string and profile picture are
+masked. In fake-data mode the owner becomes a consistent fake person and the endpoint a fake host.</sub>
 
 ## Installation
 

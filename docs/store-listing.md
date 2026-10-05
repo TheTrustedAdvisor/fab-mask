@@ -9,7 +9,7 @@ Everything needed to submit `fab-mask-<version>.zip` from the GitHub release.
 | Category | Productivity / Developer Tools | Productivity / Developer tools |
 | Privacy policy URL | <https://github.com/TheTrustedAdvisor/fab-mask/blob/main/PRIVACY.md> | same |
 | Support / homepage | <https://github.com/TheTrustedAdvisor/fab-mask> | same |
-| Screenshots (1280×800) | `docs/images/demo-unmasked.png`, `demo-masked.png`, `demo-fake.png`, `demo-preview.png`, `demo-redacted.png` | same |
+| Screenshots (1280×800) | `docs/images/store/portal-unmasked-1280x800.png`, `portal-pixelate-1280x800.png`, `portal-fake-1280x800.png`, `portal-preview-1280x800.png` | same |
 | Small promo tile | optional | optional |
 
 Note: a store-installed copy gets a store-assigned extension ID, different from the ID of the

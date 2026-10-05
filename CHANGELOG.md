@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.2.1] – 2026-10-05
+
+### Fixed
+- OneLake catalog column headers ("Owner", "Location") were masked – and replaced with fake names
+  in fake-data mode – because the catalog marks header cells only via the header row.
+- Fake-data overlays now wrap like the original text (a two-line owner name was cut off).
+
+### Changed
+- README and store screenshots now show the real Fabric portal (demo tenant) instead of a mock page.
+
 ## [1.2.0] – 2026-10-04
 
 ### Added
@@ -77,6 +87,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.2.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.1
 [1.2.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.0
 [1.1.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.1
 [1.1.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.1.0
