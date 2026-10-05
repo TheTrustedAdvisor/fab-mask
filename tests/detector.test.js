@@ -102,6 +102,8 @@ test('regexes stay linear on large adversarial input', () => {
     d.test(text);
     d.redact(text);
     const ms = Number(process.hrtime.bigint() - start) / 1e6;
-    assert.ok(ms < 500, `took ${ms}ms for input starting ${text.slice(0, 10)}`);
+    // Linear inputs take ~100 ms locally (a few hundred on slow CI runners); the quadratic
+    // regressions this guards against took tens of seconds.
+    assert.ok(ms < 2000, `took ${ms}ms for input starting ${text.slice(0, 10)}`);
   }
 });
