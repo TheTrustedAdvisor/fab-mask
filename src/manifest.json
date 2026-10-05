@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Fab Mask",
   "description": "__MSG_extDescription__",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "Matthias Falland",
   "homepage_url": "https://github.com/TheTrustedAdvisor/fab-mask",
   "default_locale": "en",

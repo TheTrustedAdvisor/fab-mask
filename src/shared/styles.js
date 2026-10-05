@@ -122,16 +122,22 @@
    * pixel per block and grow it back to the block size. Built with DOM APIs (no innerHTML) so it
    * also works on pages that enforce Trusted Types.
    */
+  // No x/y attributes on any primitive: WebKit (Safari) resolves explicit primitive coordinates of
+  // filters on HTML elements in a different user space, so a positioned feFlood ends up outside the
+  // element and the mosaic renders empty. width/height-only crops anchor at the element's corner in
+  // every engine: a 1×1 dot in an s×s cell, tiled, then grown into blocks and shifted by half a block.
   const PIXELATE_PRIMITIVES = (s) => {
     const c = Math.floor(s / 2);
     return [
       ['feGaussianBlur', { in: 'SourceGraphic', stdDeviation: (s / 2.5).toFixed(2) }],
       ['feComponentTransfer', { result: 'avg' }, [['feFuncA', { type: 'linear', slope: '2.2' }]]],
-      ['feFlood', { x: c, y: c, width: 1, height: 1 }],
-      ['feComposite', { width: s, height: s }],
-      ['feTile', { result: 'grid' }],
+      ['feFlood', { 'flood-color': '#000', result: 'fill' }],
+      ['feComposite', { in: 'fill', in2: 'fill', operator: 'over', width: 1, height: 1, result: 'dot' }],
+      ['feComposite', { in: 'dot', in2: 'dot', operator: 'over', width: s, height: s, result: 'cell' }],
+      ['feTile', { in: 'cell', result: 'grid' }],
       ['feComposite', { in: 'avg', in2: 'grid', operator: 'in' }],
-      ['feMorphology', { operator: 'dilate', radius: c }]
+      ['feMorphology', { operator: 'dilate', radius: c }],
+      ['feOffset', { dx: c, dy: c }]
     ];
   };
 

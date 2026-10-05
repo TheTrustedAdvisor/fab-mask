@@ -62,8 +62,11 @@ enable it locally (requires Xcode):
    `app.fabric.microsoft.com` and the Power BI sites.
 6. Reload open Fabric tabs.
 
-Known differences: closed shadow roots are not reachable in Safari; presentation mode depends on
-Safari's support for switching windows to full screen.
+Known differences:
+- **Presentation mode:** Safari shows its toolbar (with the address bar) in full screen when
+  *View → Always Show Toolbar in Full Screen* is checked. Uncheck it once, otherwise the IDs in the
+  address bar remain visible. An extension cannot change this setting.
+- Closed shadow roots are not reachable in Safari (rarely relevant in the Fabric portal).
 
 ## Enterprise deployment via policy
 

@@ -153,7 +153,7 @@ See [PRIVACY.md](PRIVACY.md).
 
 ```bash
 npm install
-npx playwright install chromium   # once, for E2E tests and screenshots
+npx playwright install chromium webkit   # once, for E2E tests and screenshots
 npm test                          # unit and DOM tests (node:test + jsdom)
 npm run test:e2e                  # end-to-end with the real extension in Chromium (incl. a perf test)
 npm run lint:firefox              # Mozilla's add-on linter on the Firefox build

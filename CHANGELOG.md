@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.4.1] – 2026-10-05
+
+### Fixed
+- **Pixelate rendered white in Safari:** WebKit resolves explicit `x`/`y` coordinates of SVG filter
+  primitives on HTML elements in a different coordinate space, so the mosaic's sampling grid ended
+  up outside the element. The filter now uses only `width`/`height` crops (dot → cell → tile →
+  dilate → offset) and renders identically in Blink and WebKit; a test checks both engines.
+
+### Added
+- Safari preview build (`npm run build:safari`, built in CI) and Safari install notes, including
+  the "Always Show Toolbar in Full Screen" setting for presentation mode.
+
 ## [1.4.0] – 2026-10-05
 
 ### Added
@@ -140,6 +152,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.4.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.1
 [1.4.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.0
 [1.3.4]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.4
 [1.3.3]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.3
