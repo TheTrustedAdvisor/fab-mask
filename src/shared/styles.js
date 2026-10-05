@@ -105,7 +105,8 @@
         `${withFake}[${FAKE_POS_ATTR}]{position:relative!important;}` +
         `${withFake}::after{content:attr(${FAKE_ATTR})!important;position:absolute!important;inset:0!important;` +
         `display:flex!important;align-items:center!important;padding:inherit!important;box-sizing:border-box!important;` +
-        `white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font:inherit!important;` +
+        // Wrap like the original text (a two-line owner name stays two lines), clip what does not fit.
+        `white-space:inherit!important;overflow-wrap:anywhere!important;overflow:hidden!important;font:inherit!important;` +
         `-webkit-text-fill-color:currentColor!important;pointer-events:none!important;filter:none!important;}`
       );
     }
