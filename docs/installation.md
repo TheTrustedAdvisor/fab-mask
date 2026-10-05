@@ -5,6 +5,7 @@ Firefox** 142 or later (Windows, macOS, Linux).
 
 - [Single machine: load unpacked](#single-machine-load-unpacked)
 - [Firefox](#firefox)
+- [Safari (macOS, build from source)](#safari-macos-build-from-source)
 - [Enterprise deployment via policy](#enterprise-deployment-via-policy)
 - [Troubleshooting](#troubleshooting)
 
@@ -47,6 +48,22 @@ Until the AMO listing is live, load it as a **temporary add-on** (stays until Fi
 
 All features work as in Chrome/Edge. Shortcuts can be changed in `about:addons` → ⚙ →
 *Manage Extension Shortcuts*.
+
+## Safari (macOS, build from source)
+
+Safari extensions ship inside a small macOS app. Until there is an App Store release, build and
+enable it locally (requires Xcode):
+
+1. `npm install && npm run build:safari` – creates `dist/safari-app/…/Fab Mask.app` (ad-hoc signed).
+2. Open **Fab Mask.app** once (it registers the extension with Safari).
+3. Safari → *Settings* → *Advanced* → enable **Show features for web developers**.
+4. *Develop* menu → **Allow Unsigned Extensions** (asks for your password; resets when Safari quits).
+5. Safari → *Settings* → *Extensions* → enable **Fab Mask** → *Edit Websites* → allow
+   `app.fabric.microsoft.com` and the Power BI sites.
+6. Reload open Fabric tabs.
+
+Known differences: closed shadow roots are not reachable in Safari; presentation mode depends on
+Safari's support for switching windows to full screen.
 
 ## Enterprise deployment via policy
 

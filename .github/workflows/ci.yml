@@ -49,3 +49,15 @@ jobs:
         with:
           name: fab-mask-firefox-zip
           path: dist/*-firefox.zip
+
+  safari:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Apple's safari-web-extension-converter + xcodebuild (ad-hoc signed, not distributed).
+      - run: npm run build:safari
