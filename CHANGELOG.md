@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.3.4] – 2026-10-05
+
+### Added
+- Author links as small icons in the popup footer (website, LinkedIn, GitHub, YouTube).
+- Store assets (300×300 logo, 440×280 and 1400×560 promo tiles, `npm run store-assets`) and a
+  step-by-step guide for publishing on Microsoft Edge Add-ons ([docs/publishing-edge.md](docs/publishing-edge.md)).
+
 ## [1.3.3] – 2026-10-05
 
 ### Added
@@ -123,6 +130,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.3.4]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.4
 [1.3.3]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.3
 [1.3.2]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.2
 [1.3.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.1

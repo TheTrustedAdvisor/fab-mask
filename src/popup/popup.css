@@ -60,5 +60,9 @@ select {
   background: var(--fm-bg); color: var(--fm-text); font: inherit;
 }
 
-.footer #about { color: var(--fm-muted); text-decoration: none; font-size: 12px; }
+.credits { display: inline-flex; align-items: center; gap: 8px; }
+.footer #about { color: var(--fm-muted); text-decoration: none; font-size: 12px; margin-right: 2px; }
 .footer #about:hover { text-decoration: underline; }
+.credit-icon { display: inline-flex; color: var(--fm-muted); border-radius: 3px; }
+.credit-icon svg { width: 15px; height: 15px; }
+.credit-icon:hover, .credit-icon:focus-visible { color: var(--fm-accent); }

@@ -353,6 +353,13 @@ test('v1.3: "Send feedback" opens a pre-filled GitHub issue form', async () => {
     chrome.tabs.create = async ({ url }) => { window.__opened = url; };
     window.close = () => {};
   });
+  const credits = await popup.$$eval('.credit-icon', (as) => as.map((a) => a.getAttribute('href')));
+  assert.deepEqual(credits, [
+    'https://www.fabricperiodictable.com',
+    'https://www.linkedin.com/in/matthias-falland',
+    'https://github.com/TheTrustedAdvisor',
+    'https://www.youtube.com/@TheTrustedAdvisor'
+  ]);
   await popup.click('#feedback');
   await popup.waitForFunction(() => window.__opened);
   const href = await popup.evaluate(() => window.__opened);

@@ -1,6 +1,7 @@
 # Store listing (Chrome Web Store & Microsoft Edge Add-ons)
 
 Everything needed to submit `fab-mask-<version>.zip` from the GitHub release.
+Step-by-step for Edge: [publishing-edge.md](publishing-edge.md).
 
 | | Chrome Web Store | Edge Add-ons |
 |---|---|---|
@@ -11,7 +12,9 @@ Everything needed to submit `fab-mask-<version>.zip` from the GitHub release.
 | Support / homepage | <https://github.com/TheTrustedAdvisor/fab-mask> | same |
 | Developer | Matthias Falland – <https://www.fabricperiodictable.com> | same |
 | Screenshots (1280×800) | `docs/images/store/portal-unmasked-1280x800.png`, `portal-pixelate-1280x800.png`, `portal-fake-1280x800.png`, `portal-preview-1280x800.png` | same |
-| Small promo tile | optional | optional |
+| Logo | 128 px icon from the package | `docs/images/store/logo-300x300.png` |
+| Small promo tile (440×280) | `docs/images/store/promo-small-440x280.png` | same |
+| Marquee / large tile (1400×560) | `docs/images/store/promo-large-1400x560.png` | same |
 
 Note: a store-installed copy gets a store-assigned extension ID, different from the ID of the
 self-signed CRX (`mamdngeehbhnikhehiplimphjgpfpdid`). Use one channel per device.

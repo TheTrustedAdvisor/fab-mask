@@ -146,6 +146,15 @@
     window.close();
   });
 
+  // Author links (the extension is free – credits deserve a visible place).
+  for (const link of document.querySelectorAll('.credit-icon')) {
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await chrome.tabs.create({ url: link.href });
+      window.close();
+    });
+  }
+
   $('feedback').addEventListener('click', async (e) => {
     e.preventDefault();
     const url = FM.feedback.feedbackUrl({ version: chrome.runtime.getManifest().version, settings });
