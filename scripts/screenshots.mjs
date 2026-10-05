@@ -64,10 +64,12 @@ await set({});
 for (const scheme of ['light', 'dark']) {
   const p = await context.newPage();
   await p.emulateMedia({ colorScheme: scheme });
-  await p.setViewportSize({ width: 320, height: 900 });
+  await p.setViewportSize({ width: 640, height: 600 });
   await p.goto(`chrome-extension://${id}/popup/popup.html`);
   await p.waitForTimeout(300);
-  await p.screenshot({ path: join(OUT, `popup-${scheme}.png`), fullPage: true });
+  const height = await p.evaluate(() => document.body.scrollHeight);
+  await p.setViewportSize({ width: 640, height });
+  await p.screenshot({ path: join(OUT, `popup-${scheme}.png`) });
 }
 const o = await context.newPage();
 await o.setViewportSize({ width: 1280, height: 800 });

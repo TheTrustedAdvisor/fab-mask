@@ -1,4 +1,5 @@
-body { width: 320px; }
+/* Extension popups are capped at 800×600 px: two columns keep everything visible without scrolling. */
+body { width: 640px; max-height: 600px; overflow-y: auto; }
 .header {
   display: flex; align-items: center; gap: 10px;
   padding: 12px 14px; border-bottom: 1px solid var(--fm-border);
@@ -39,7 +40,15 @@ h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: v
 
 .segmented label + label { border-left: 0; }
 .segmented label:nth-child(n+3) span { border-top: 1px solid var(--fm-border); }
-.quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.toolbar { display: flex; align-items: center; gap: 12px; }
+.quick { display: grid; grid-template-columns: repeat(3, auto); gap: 6px; }
+.profile-row { flex: 1; min-width: 0; padding: 0; }
+.profile-row .label { flex: none; }
+.columns { display: grid; grid-template-columns: 1.35fr 1fr; gap: 0 18px; }
+.columns .col + .col { border-left: 1px solid var(--fm-border); padding-left: 18px; }
+.columns section { border-bottom: 0; padding: 10px 0 4px; }
+.columns .col:last-child section + section { border-top: 1px solid var(--fm-border); margin-top: 6px; }
+.categories { gap: 5px; }
 .quick .btn { padding: 6px 4px; font-size: 12px; }
 #present[aria-pressed="true"] { background: #0f6cbd; border-color: #0f6cbd; color: #fff; }
 .btn.toggle[aria-pressed="true"] { background: var(--fm-accent); border-color: var(--fm-accent); color: var(--fm-on-accent); }

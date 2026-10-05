@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.3.2] – 2026-10-05
+
+### Fixed
+- The popup was cut off: Chrome and Edge limit extension popups to 600 px height, and the
+  single-column popup had grown to ~900 px. New two-column layout (640 px wide, ~550 px high in
+  English and German); a test now fails if any UI language exceeds the limit.
+
 ## [1.3.1] – 2026-10-05
 
 ### Added
@@ -109,6 +116,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.3.2]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.2
 [1.3.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.1
 [1.3.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.0
 [1.2.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.2.1

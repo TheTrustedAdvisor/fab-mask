@@ -59,7 +59,7 @@ the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerb
 
 ### Usage
 
-<img src="docs/images/popup-light.png" alt="Popup" width="260" align="right">
+<img src="docs/images/popup-light.png" alt="Fab Mask popup: quick buttons, profile, detection categories and appearance" width="560">
 
 | Shortcut | Action |
 |---|---|
@@ -83,8 +83,6 @@ the **lakehouse explorer** (`pbilhe.powerbi.com`), **pipelines** (`pbidpe.powerb
 - **Send feedback** (popup and options page): opens a pre-filled GitHub issue with version, browser
   and mode only – no page URLs, custom terms or names
 - Changes apply **instantly**, no reload · UI in English and German
-
-<br clear="right">
 
 ## Permissions & privacy
 

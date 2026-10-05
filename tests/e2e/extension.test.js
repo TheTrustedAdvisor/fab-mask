@@ -363,3 +363,27 @@ test('v1.3: "Send feedback" opens a pre-filled GitHub issue form', async () => {
   assert.ok(!href.includes('Contoso'));
   await popup.close();
 });
+
+test('popup fits the browser popup limit (800×600) in every UI language', async () => {
+  // Chrome/Edge cut popups off at 600 px height; with hidden scrollbars (macOS) the rest is lost.
+  for (const lang of fs.readdirSync(path.join(EXT, '_locales'))) {
+    const ext = fs.mkdtempSync(path.join(os.tmpdir(), `fab-mask-${lang}-`));
+    fs.cpSync(EXT, ext, { recursive: true });
+    fs.copyFileSync(path.join(EXT, '_locales', lang, 'messages.json'), path.join(ext, '_locales', 'en', 'messages.json'));
+    const ctx = await chromium.launchPersistentContext(fs.mkdtempSync(path.join(os.tmpdir(), 'fab-mask-pop-')), {
+      channel: 'chromium', headless: true, args: [`--disable-extensions-except=${ext}`, `--load-extension=${ext}`]
+    });
+    try {
+      const sw = ctx.serviceWorkers()[0] || (await ctx.waitForEvent('serviceworker'));
+      const page = await ctx.newPage();
+      await page.setViewportSize({ width: 800, height: 600 });
+      await page.goto(`chrome-extension://${new URL(sw.url()).host}/popup/popup.html`);
+      await page.waitForTimeout(300);
+      const size = await page.evaluate(() => ({ w: document.body.scrollWidth, h: document.body.scrollHeight }));
+      assert.ok(size.w <= 800, `${lang}: popup width ${size.w}px > 800px`);
+      assert.ok(size.h <= 600, `${lang}: popup height ${size.h}px > 600px`);
+    } finally {
+      await ctx.close();
+    }
+  }
+});
