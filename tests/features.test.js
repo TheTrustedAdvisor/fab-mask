@@ -311,3 +311,22 @@ test('salt changes fake values (not checkable against the public algorithm)', ()
   assert.equal(fake.fakeGuid(GUID), salted, 'still deterministic per install');
   fake.setSalt('');
 });
+
+test('OneLake catalog header cells (only marked by the header row) are never masked or faked', async () => {
+  const { document } = await setup(`<!doctype html><html><body>
+    <div role="rowgroup" class="column-headers-rowgroup"><div role="row" class="column-headers">
+      <span id="h-owner" class="col col-owner">Owner</span><span id="h-loc" class="col col-workspace">Location</span></div></div>
+    <div role="row" class="row"><span id="c-owner" role="cell" class="col col-owner">Jane Doe</span>
+      <span id="c-loc" role="cell" class="col col-workspace">Contoso Finance</span></div></body></html>`,
+  { settings: { mode: 'fake', categories: { workspaceNames: true } } });
+  const fakeOf = (id) => document.getElementById(id).getAttribute('data-fabric-fake');
+  assert.equal(fakeOf('h-owner'), null);
+  assert.equal(fakeOf('h-loc'), null);
+  assert.ok(fakeOf('c-owner'));
+  assert.ok(fakeOf('c-loc'));
+  const { staticSelectorList } = require('../src/shared/styles.js');
+  const list = staticSelectorList(settingsApi.normalizeSettings({ categories: { workspaceNames: true } }));
+  assert.equal(document.getElementById('h-owner').matches(list), false);
+  assert.equal(document.getElementById('h-loc').matches(list), false);
+  assert.equal(document.getElementById('c-owner').matches(list), true);
+});

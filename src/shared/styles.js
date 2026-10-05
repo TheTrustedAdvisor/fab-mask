@@ -18,6 +18,10 @@
   const FAKE_POS_ATTR = 'data-fabric-fake-pos';
   const PREVIEW_COLOR = '#13a10e';
 
+  // Column headers carry the same classes as their cells. Workspace lists mark them with
+  // role="columnheader"/.column-header, the OneLake catalog only via the header row (.column-headers).
+  const NOT_HEADER = ':not([role="columnheader"], [role="columnheader"] *, .column-header, .column-headers *, thead *)';
+
   // Best-effort selectors for the signed-in user (Microsoft account manager / Fluent personas).
   // The portal markup changes frequently; users can add more via the element picker.
   const USER_PROFILE_SELECTORS = [
@@ -31,8 +35,8 @@
     'img[data-testid="workspace-header-logo-img"]',
     // "Owner" column in workspace lists and the OneLake catalog (display names, not e-mails)
     '[data-testid="fluentListCell.owner"]',
-    // The column header carries the same classes as the cells – keep the header ("Owner") readable.
-    '.col.col-owner:not([role="columnheader"], .column-header)',
+    // Keep the column header ("Owner") readable – see NOT_HEADER.
+    `.col.col-owner${NOT_HEADER}`,
     // Owner in the OneLake catalog item details
     'owner-details .property-value',
     // Admins / members lists (admin portal → Domains)
@@ -59,7 +63,7 @@
   const PERSON_NAME_SELECTORS = [
     'user-details .user-name',
     '[data-testid="fluentListCell.owner"]',
-    '.col.col-owner:not([role="columnheader"], .column-header)',
+    `.col.col-owner${NOT_HEADER}`,
     'owner-details .property-value',
     'tri-members-list .members-names-list',
     '#mectrl_currentAccount_primary',
@@ -73,7 +77,7 @@
     'h1[data-testid="workspace-name-header"]',
     'button.workspaceName .navbar-item-label',
     'tri-workspace-button .workspace-name',
-    '.col.col-workspace:not([role="columnheader"], .column-header)',
+    `.col.col-workspace${NOT_HEADER}`,
     'trident-domain-link .domain-link'
   ];
 
