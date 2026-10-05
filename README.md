@@ -164,6 +164,18 @@ and Monaco stable.
    `updates.xml` and publishes them as a GitHub release. Browsers installed via policy update
    automatically.
 
+## Author
+
+Fab Mask is built by **Matthias Falland**.
+
+- 🌐 [fabricperiodictable.com](https://www.fabricperiodictable.com)
+- 💼 [LinkedIn: matthias-falland](https://www.linkedin.com/in/matthias-falland)
+- 🐙 [GitHub: TheTrustedAdvisor](https://github.com/TheTrustedAdvisor)
+- ▶️ [YouTube: TheTrustedAdvisor](https://www.youtube.com/@TheTrustedAdvisor)
+
+Feedback and ideas are welcome – use **Send feedback** in the extension or open an
+[issue](https://github.com/TheTrustedAdvisor/fab-mask/issues).
+
 ## License
 
 [MIT](LICENSE) © Matthias Falland. "Microsoft Fabric" and "Power BI" are trademarks of Microsoft

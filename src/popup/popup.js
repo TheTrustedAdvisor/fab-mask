@@ -140,6 +140,12 @@
   $('page-status').textContent = FM.t(activeTabId !== null ? 'popupActiveHere' : 'popupNotFabric');
   $('pick').disabled = activeTabId === null;
 
+  $('about').addEventListener('click', async (e) => {
+    e.preventDefault();
+    await chrome.tabs.create({ url: chrome.runtime.getURL('options/options.html#about') });
+    window.close();
+  });
+
   $('feedback').addEventListener('click', async (e) => {
     e.preventDefault();
     const url = FM.feedback.feedbackUrl({ version: chrome.runtime.getManifest().version, settings });

@@ -275,5 +275,14 @@
   },
   "sendFeedbackHint": {
     "message": "Opens a pre-filled GitHub issue (version, browser and mode only – no page URLs, terms or names)"
+  },
+  "aboutTitle": {
+    "message": "About"
+  },
+  "aboutText": {
+    "message": "Creator of Fab Mask and fabricperiodictable.com. Fab Mask is free and open source (MIT)."
+  },
+  "byAuthor": {
+    "message": "by Matthias Falland"
   }
 }
