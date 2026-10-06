@@ -4,10 +4,11 @@ All notable changes to this project are documented here. Versions follow [SemVer
 
 ## [1.4.2] – 2026-10-06
 
-### Fixed
-- The popup always said "Not a Fabric / Power BI page" (seen in Safari): the status ping went to all
-  frames, and with promise-based messaging the answer of a silent sub-frame could win. The popup now
-  pings only the top frame, which answers via callback and promise.
+### Changed
+- More robust popup status check: the ping goes only to the top frame (`frameId: 0`), which answers
+  via callback and promise, so silent sub-frames can never be taken as the answer with
+  promise-based messaging (Safari, Firefox). A "Not a Fabric page" report in Safari turned out to
+  be a half-loaded extension (see the Safari notes in the installation guide), not this.
 
 ## [1.4.1] – 2026-10-05
 

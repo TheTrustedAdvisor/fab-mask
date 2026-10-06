@@ -68,6 +68,11 @@ Known differences:
   address bar remain visible. An extension cannot change this setting.
 - Closed shadow roots are not reachable in Safari (rarely relevant in the Fabric portal).
 
+If the popup says "Not a Fabric / Power BI page" on a Fabric tab, or features only partly work,
+Safari has loaded the extension only half: quit Safari completely (⌘Q), reopen it, re-enable
+*Develop → Allow Unsigned Extensions*, check that Fab Mask is enabled under *Settings → Extensions*,
+and reload the Fabric tab.
+
 ## Enterprise deployment via policy
 
 On managed devices, the **signed CRX** from the GitHub release is installed via policy. Browsers then
