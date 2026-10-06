@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. Versions follow [SemVer](https://semver.org/).
 
+## [1.4.2] – 2026-10-06
+
+### Fixed
+- The popup always said "Not a Fabric / Power BI page" (seen in Safari): the status ping went to all
+  frames, and with promise-based messaging the answer of a silent sub-frame could win. The popup now
+  pings only the top frame, which answers via callback and promise.
+
 ## [1.4.1] – 2026-10-05
 
 ### Fixed
@@ -152,6 +159,7 @@ First release.
 - Popup and options page in English and German, light and dark theme.
 - Signed CRX + `updates.xml` for policy-based deployment (Chrome & Edge).
 
+[1.4.2]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.2
 [1.4.1]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.1
 [1.4.0]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.4.0
 [1.3.4]: https://github.com/TheTrustedAdvisor/fab-mask/releases/tag/v1.3.4

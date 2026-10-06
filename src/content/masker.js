@@ -715,9 +715,13 @@
     function onMessage(message, _sender, sendResponse) {
       if (!message || typeof message.type !== 'string') return undefined;
       switch (message.type) {
-        case MSG.PING:
-          if (isTopFrame) sendResponse({ ok: true, enabled: settings.enabled });
-          return undefined;
+        case MSG.PING: {
+          if (!isTopFrame) return undefined;
+          const reply = { ok: true, enabled: settings.enabled };
+          // Chrome/Edge use sendResponse; Safari and Firefox (browser.*) also accept a returned promise.
+          sendResponse(reply);
+          return Promise.resolve(reply);
+        }
         case MSG.START_PICKER:
           getPicker().start();
           return undefined;

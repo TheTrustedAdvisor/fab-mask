@@ -394,3 +394,16 @@ test('popup fits the browser popup limit (800×600) in every UI language', async
     }
   }
 });
+
+test('popup status: the top frame of a Fabric tab answers the ping (frameId 0)', async () => {
+  const page = await context.newPage();
+  await page.goto(PORTAL);
+  await page.waitForFunction(() => document.querySelector('#ws-id')?.hasAttribute('data-fabric-mask'));
+  await page.bringToFront();
+  const reply = await worker.evaluate(async () => {
+    const [tab] = await chrome.tabs.query({ active: true });
+    return chrome.tabs.sendMessage(tab.id, { type: 'fabric-mask:ping' }, { frameId: 0 });
+  });
+  assert.equal(reply.ok, true);
+  await page.close();
+});

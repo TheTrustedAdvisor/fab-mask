@@ -135,7 +135,9 @@
   // Is the content script running in the active tab? (No "tabs" permission needed for this.)
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const reply = tab && (await chrome.tabs.sendMessage(tab.id, { type: MSG.PING }));
+    // Ask only the top frame: Safari (and Firefox's browser.*) can resolve with the first frame's
+    // listener result, and the portal's many sub-frames do not answer the ping.
+    const reply = tab && (await chrome.tabs.sendMessage(tab.id, { type: MSG.PING }, { frameId: 0 }));
     if (reply && reply.ok) activeTabId = tab.id;
   } catch {
     activeTabId = null;
