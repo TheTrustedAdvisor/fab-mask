@@ -159,6 +159,7 @@ npm run test:e2e                  # end-to-end with the real extension in Chromi
 npm run lint:firefox              # Mozilla's add-on linter on the Firefox build
 npm run test:e2e:firefox          # smoke test in a real Firefox (FIREFOX_PATH=…; runs in CI)
 npm run build:safari              # Safari app via Apple's converter + Xcode (macOS only)
+npm run release:safari            # signed App Store build + upload (APPLE_TEAM_ID=…, see docs/publishing-safari.md)
 npm run lint
 npm run build                     # dist/fab-mask-<version>.zip + -firefox.zip (local; dist/ is recreated each build)
 npm run build:signed              # plus signed CRX + updates.xml (needs the signing key)

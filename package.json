@@ -16,7 +16,8 @@
     "store-assets": "node scripts/store-assets.mjs",
     "lint:firefox": "npm run build && web-ext lint --source-dir dist/firefox",
     "test:e2e:firefox": "npm run build && node --test tests/e2e-firefox/*.test.js",
-    "build:safari": "node scripts/build-safari.mjs"
+    "build:safari": "node scripts/build-safari.mjs",
+    "release:safari": "node scripts/build-safari.mjs --release"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

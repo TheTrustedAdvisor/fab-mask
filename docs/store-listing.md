@@ -1,7 +1,7 @@
 # Store listing (Chrome Web Store & Microsoft Edge Add-ons)
 
 Everything needed to submit `fab-mask-<version>.zip` from the GitHub release.
-Step-by-step for Edge: [publishing-edge.md](publishing-edge.md) · Firefox: [publishing-firefox.md](publishing-firefox.md).
+Step-by-step for Edge: [publishing-edge.md](publishing-edge.md) · Firefox: [publishing-firefox.md](publishing-firefox.md) · Safari/Mac App Store: [publishing-safari.md](publishing-safari.md).
 
 | | Chrome Web Store | Edge Add-ons |
 |---|---|---|
